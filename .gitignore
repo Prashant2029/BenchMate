@@ -1,0 +1,15 @@
+benchmate
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Database
+*.sqlite3
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+db.sqlite3
+/staticfiles/
+/media/

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BenchMate - AI Study Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+        }
+        
+        body {
+            background-color: #343541;
+            color: #fff;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            width: 260px;
+            background-color: #202123;
+            display: flex;
+            flex-direction: column;
+            padding: 12px;
+            overflow-y: auto;
+        }
+        
+        .new-chat-btn {
+            background-color: #4a6cf7;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            margin-top: 51px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .new-chat-btn i {
+            font-size: 13px;
+            font-weight: 900;
+        }
+        
+        .chat-history {
+            margin-top: 20px;
+        }
+        
+        .history-section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            color: #8e8ea0;
+            font-size: 13px;
+            padding: 15px 0 11px;
+            border-bottom: 1px solid #3c3c3c;
+        }
+        
+        .chat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 15px;
+        }
+        
+        .chat-item:hover {
+            background-color: #2b2c2f;
+        }
+        
+        .chat-item i {
+            color: #8e8ea0;
+            font-size: 16px;
+        }
+        
+        /* Main Chat Area */
+        .main-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .header {
+            background-color: #343541;
+            padding: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #4e4e4e;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            color: #4a6cf7;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #4a6cf7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Chat Messages */
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .message {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .avatar-small {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .ai-avatar {
+            background-color: #10a37f;
+        }
+        
+        .user-avatar {
+            background-color: #4a6cf7;
+        }
+        
+        .message-content {
+            flex: 1;
+            padding-top: 5px;
+            line-height: 26px;
+            font-size: 15px;
+        }
+        
+        /* Suggestions */
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 17px;
+            justify-content: center;
+            max-width: 805px;
+            margin: 20px auto;
+        }
+        
+        .suggestion-chip {
+            background-color: #40414f;
+            border: 1px solid #565869;
+            border-radius: 8px;
+            padding: 16px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .suggestion-chip:hover {
+            background-color: #4a4b5a;
+        }
+        
+        /* Input Area */
+        .input-area {
+            background-color: #343541;
+            border-top: 1px solid #4a4a4a;
+            padding: 21px 70px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .input-container {
+            background-color: #40414f;
+            border: 1px solid #565869;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding: 14px 23px;
+            width: 803px;
+            max-width: 100%;
+        }
+        
+        .input-container input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+        }
+        
+        .send-button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #757575;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .input-area {
+                padding: 15px;
+            }
+            
+            .message {
+                padding: 0 15px;
+            }
+            
+            .suggestions {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <button class="new-chat-btn">
+            <i class="fas fa-plus"></i>
+            <span>New chat</span>
+        </button>
+        
+        <div class="chat-history">
+            <div class="history-section">
+                <div class="section-title">Today</div>
+                <div class="chat-item">
+                    <i class="far fa-comment"></i>
+                    <span>Algebra help</span>
+                </div>
+                <div class="chat-item">
+                    <i class="far fa-comment"></i>
+                    <span>Biology questions</span>
+                </div>
+            </div>
+            
+            <div class="history-section">
+                <div class="section-title">Yesterday</div>
+                <div class="chat-item">
+                    <i class="far fa-comment"></i>
+                    <span>Physics concepts</span>
+                </div>
+                <div class="chat-item">
+                    <i class="far fa-comment"></i>
+                    <span>Essay writing tips</span>
+                </div>
+            </div>
+            
+            <div class="history-section">
+                <div class="section-title">Previous 7 Days</div>
+                <div class="chat-item">
+                    <i class="far fa-comment"></i>
+                    <span>History research</span>
+                </div>
+                <div class="chat-item">
+                    <i class="far fa-comment"></i>
+                    <span>Chemistry problems</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Chat Area -->
+    <div class="main-chat">
+        <div class="header">
+            <div class="logo">
+                <img src="https://api.builder.io/api/v1/image/assets/TEMP/dc55aceca2190cf92b1ca34223b3f3ace7a84e52?placeholderIfAbsent=true&apiKey=f64508a8f0814a288226736a872b2cec" alt="BenchMate Logo">
+            </div>
+            
+            <div class="nav-links">
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <a href="{% url 'subject' %}">Subjects</a>
+                <a href="{% url 'chat' %}">Chatbot</a>
+                <a href="#">Games</a>
+            </div>
+            
+            <div class="user-info">
+                <span>Welcome User!</span>
+                <div class="avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-container">
+            <!-- AI Message -->
+            <div class="message">
+                <div class="avatar-small ai-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    Hello! I'm BenchMate, your AI study assistant. How can I help you with your studies today?
+                </div>
+            </div>
+            
+            <!-- User Message -->
+            <div class="message">
+                <div class="avatar-small user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="message-content">
+                    Can you help me understand quadratic equations?
+                </div>
+            </div>
+            
+            <!-- AI Message -->
+            <div class="message">
+                <div class="avatar-small ai-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    Of course! Quadratic equations are polynomial equations of the form ax² + bx + c = 0, where a, b, and c are constants and a ≠ 0. They can be solved using various methods like factoring, completing the square, or using the quadratic formula: x = (-b ± √(b² - 4ac)) / (2a). Would you like me to explain any specific method in detail?
+                </div>
+            </div>
+            
+            <!-- Suggestions -->
+            <div class="suggestions">
+                <div class="suggestion-chip">Explain calculus concepts</div>
+                <div class="suggestion-chip">Help with biology homework</div>
+                <div class="suggestion-chip">Practice language skills</div>
+                <div class="suggestion-chip">Study techniques</div>
+            </div>
+        </div>
+        
+        <!-- Input Area -->
+        <div class="input-area">
+            <div class="input-container">
+                <input type="text" placeholder="Message BenchMate...">
+                <button class="send-button">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple interactivity for the chat interface
+        document.addEventListener('DOMContentLoaded', function() {
+            const sendButton = document.querySelector('.send-button');
+            const inputField = document.querySelector('.input-container input');
+            const chatContainer = document.querySelector('.chat-container');
+            
+            // Function to add a new message
+            function addMessage(text, isUser) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+                
+                const avatar = document.createElement('div');
+                avatar.className = isUser ? 'avatar-small user-avatar' : 'avatar-small ai-avatar';
+                
+                const icon = document.createElement('i');
+                icon.className = isUser ? 'fas fa-user' : 'fas fa-robot';
+                avatar.appendChild(icon);
+                
+                const content = document.createElement('div');
+                content.className = 'message-content';
+                content.textContent = text;
+                
+                messageDiv.appendChild(avatar);
+                messageDiv.appendChild(content);
+                
+                chatContainer.insertBefore(messageDiv, document.querySelector('.suggestions'));
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+            
+            // Send message on button click
+            sendButton.addEventListener('click', function() {
+                if (inputField.value.trim() !== '') {
+                    addMessage(inputField.value, true);
+                    inputField.value = '';
+                    
+                    // Simulate AI response after a delay
+                    setTimeout(function() {
+                        addMessage("I'm here to help with your studies! What specific topic would you like to explore?", false);
+                    }, 1000);
+                }
+            });
+            
+            // Send message on Enter key
+            inputField.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendButton.click();
+                }
+            });
+            
+            // Make suggestion chips clickable
+            const chips = document.querySelectorAll('.suggestion-chip');
+            chips.forEach(chip => {
+                chip.addEventListener('click', function() {
+                    inputField.value = this.textContent;
+                    sendButton.click();
+                });
+            });
+            
+            // Make chat history items clickable
+            const chatItems = document.querySelectorAll('.chat-item');
+            chatItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const topic = this.querySelector('span').textContent;
+                    addMessage(`Can we continue our discussion about ${topic}?`, true);
+                    
+                    // Simulate AI response
+                    setTimeout(function() {
+                        addMessage(`Of course! Let's continue our discussion about ${topic}. What would you like to know?`, false);
+                    }, 1000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

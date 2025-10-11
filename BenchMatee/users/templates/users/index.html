@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BenchMate - AI-Powered Study Assistant</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+    }
+    
+    .header {
+        background-color: white;
+        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        width: 100%;
+        padding: 10px 34px;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+    }
+    
+    .logo-section {
+        display: flex;
+        align-items: center;
+    }
+    
+    .logo {
+        border-radius: 9px;
+        width: 89px;
+        height: 60px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('https://api.builder.io/api/v1/image/assets/TEMP/2a7f5fdb9bb30e66d905e4d030a8fce950bca78f?placeholderIfAbsent=true&apiKey=f64508a8f0814a288226736a872b2cec');
+    }
+    
+    .login-section {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 15px;
+        color: black;
+        font-weight: 500;
+        line-height: 1.71;
+    }
+    
+    .login-text {
+        white-space: nowrap;
+    }
+    
+    .avatar-icon {
+        width: 45px;
+        height: 45px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('https://api.builder.io/api/v1/image/assets/TEMP/d2c32a5fd711c72dd22babdb1bc51b579ae5516b?placeholderIfAbsent=true&apiKey=f64508a8f0814a288226736a872b2cec');
+    }
+    
+    .main-content {
+        background-color: #f8f9fa;
+        display: flex;
+        padding: 8px 10px 0;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .hero-heading {
+        align-self: center;
+        display: flex;
+        margin-top: 99px;
+        width: 100%;
+        max-width: 1160px;
+        flex-direction: column;
+        align-items: stretch;
+        font-size: 49px;
+        color: #222222;
+        font-weight: 700;
+        text-align: center;
+        line-height: 1.24;
+    }
+    
+    .hero-subtitle {
+        align-self: center;
+        display: flex;
+        margin-top: 20px;
+        width: 700px;
+        max-width: 100%;
+        flex-direction: column;
+        align-items: center;
+        font-size: 19px;
+        color: #555555;
+        font-weight: 400;
+        text-align: center;
+        line-height: 32px;
+    }
+    
+    .cta-buttons {
+        align-self: center;
+        display: flex;
+        margin-top: 20px;
+        min-height: 74px;
+        width: 100%;
+        max-width: 1160px;
+        padding-top: 20px;
+        align-items: stretch;
+        gap: 20px;
+        font-size: 15px;
+        font-weight: 500;
+        text-align: center;
+        line-height: 26px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .btn-primary {
+        border-radius: 6px;
+        background-color: #4a6cf7;
+        display: flex;
+        padding: 12px 28px;
+        flex-direction: column;
+        align-items: center;
+        color: white;
+        justify-content: center;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .btn-secondary {
+        border-radius: 6px;
+        border: 2px solid #4a6cf7;
+        display: flex;
+        padding: 14px 30px;
+        flex-direction: column;
+        align-items: center;
+        color: #4a6cf7;
+        justify-content: center;
+        text-decoration: none;
+        background: white;
+        cursor: pointer;
+    }
+    
+    .features-section {
+        background-color: white;
+        align-self: center;
+        display: flex;
+        margin-top: 100px;
+        width: 100%;
+        max-width: 1280px;
+        padding: 80px 40px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .section-title {
+        font-size: 35px;
+        color: #222222;
+        font-weight: 700;
+        line-height: 1.65;
+        margin-bottom: 15px;
+    }
+    
+    .section-subtitle {
+        font-size: 15px;
+        color: #666666;
+        font-weight: 400;
+        line-height: 26px;
+        max-width: 600px;
+        margin: 0 auto 50px;
+    }
+    
+    .features-grid {
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 100%;
+        max-width: 1200px;
+    }
+    
+    .feature-card {
+        border-radius: 12px;
+        background-color: white;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.05);
+        display: flex;
+        min-width: 240px;
+        padding: 40px 30px;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        max-width: 294px;
+    }
+    
+    .feature-icon {
+        border-radius: 20px;
+        display: flex;
+        min-height: 80px;
+        width: 80px;
+        align-items: center;
+        font-size: 32px;
+        color: #4a6cf7;
+        font-weight: 900;
+        justify-content: center;
+        margin-bottom: 25px;
+    }
+    
+    .feature-title {
+        font-size: 21px;
+        color: #222222;
+        font-weight: 700;
+        line-height: 1.68;
+        margin-bottom: 14px;
+        text-align: center;
+    }
+    
+    .feature-description {
+        font-size: 15px;
+        color: #666666;
+        font-weight: 400;
+        line-height: 26px;
+        text-align: center;
+    }
+    
+    .process-section {
+        display: flex;
+        padding: 80px 40px;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .process-grid {
+        display: flex;
+        gap: 30px;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 100%;
+        max-width: 1200px;
+        margin-top: 50px;
+    }
+    
+    .process-card {
+        border-radius: 12px;
+        background-color: white;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.05);
+        display: flex;
+        width: 100%;
+        max-width: 350px;
+        padding: 30px;
+        flex-direction: column;
+        align-items: center;
+        color: #333333;
+        font-weight: 700;
+        text-align: center;
+        line-height: 1.6;
+        flex: 1;
+    }
+    
+    .process-number {
+        border-radius: 25px;
+        background-color: #4a6cf7;
+        display: flex;
+        min-height: 50px;
+        width: 50px;
+        align-items: center;
+        font-size: 20px;
+        color: white;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    
+    .process-title {
+        font-size: 19px;
+        margin-bottom: 10px;
+    }
+    
+    .process-description {
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 26px;
+    }
+    
+    .gamify-section {
+        background-color: white;
+        display: flex;
+        padding: 80px 40px;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .gamify-content {
+        display: flex;
+        gap: 50px;
+        width: 100%;
+        max-width: 1160px;
+        margin-top: 50px;
+        align-items: center;
+    }
+    
+    .gamify-text {
+        flex: 1;
+        min-width: 300px;
+        max-width: 500px;
+    }
+    
+    .gamify-image {
+        flex: 1;
+        min-width: 300px;
+        max-width: 555px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .gamify-demo {
+        border-radius: 12px;
+        box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        overflow: hidden;
+        aspect-ratio: 1.78;
+    }
+    
+    .gamify-demo-content {
+        background-color: #4a6cf7;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .gamify-vector {
+        width: 60%;
+        max-width: 363px;
+        height: auto;
+        background-image: url('https://api.builder.io/api/v1/image/assets/TEMP/b9b41557360145002fb33678a4b13c849bdb67f4?placeholderIfAbsent=true&apiKey=f64508a8f0814a288226736a872b2cec');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        aspect-ratio: 363/46;
+    }
+    
+    .feature-list {
+        margin: 31px 0 36px;
+    }
+    
+    .feature-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .feature-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .feature-icon-small {
+        font-size: 20px;
+        color: #4a6cf7;
+        font-weight: 900;
+        margin-right: 15px;
+        min-width: 20px;
+    }
+    
+    .feature-text {
+        font-size: 15px;
+        color: #333333;
+        font-weight: 400;
+        line-height: 26px;
+    }
+    
+    .footer {
+        margin-top: 21px;
+        width: 100%;
+        padding: 18px 56px 4px 27px;
+        background: linear-gradient(88deg, #4a6cf7 2.63%, #3a5cd8 97.37%);
+    }
+    
+    .footer-content {
+        display: flex;
+        width: 100%;
+        max-width: 1309px;
+        align-items: flex-start;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+    
+    .footer-logo {
+        height: 137px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .footer-logo-img {
+        border-radius: 9px;
+        width: 143px;
+        aspect-ratio: 0.958;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-image: url('https://api.builder.io/api/v1/image/assets/TEMP/adb99ce8ebfb6a6eae619922043da0157901a8cc?placeholderIfAbsent=true&apiKey=f64508a8f0814a288226736a872b2cec');
+    }
+    
+    .footer-contact {
+        margin-top: 32px;
+        align-self: end;
+    }
+    
+    .contact-title {
+        color: white;
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 0.8;
+        text-align: center;
+        margin-bottom: 14px;
+    }
+    
+    .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: white;
+        font-size: 20px;
+        font-weight: 600;
+        line-height: 1.28;
+        margin-bottom: 17px;
+    }
+    
+    .contact-icon {
+        width: 34px;
+        height: 34px;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    
+    .social-links {
+        display: flex;
+        align-items: center;
+        gap: 31px;
+        margin-top: 11px;
+    }
+    
+    .social-group {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+    
+    .social-icon {
+        width: 45px;
+        height: 45px;
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    
+    .footer-divider {
+        border: 2px solid white;
+        width: 100%;
+        max-width: 1327px;
+        margin: 59px auto 13px;
+        height: 0;
+    }
+    
+    .footer-copyright {
+        color: white;
+        font-size: 15px;
+        font-weight: 400;
+        line-height: 26px;
+        text-align: center;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 991px) {
+        .header {
+            max-width: 100%;
+            padding: 10px 20px;
+        }
+        
+        .login-text {
+            margin-right: 0;
+        }
+        
+        .hero-heading {
+            max-width: 100%;
+            margin-top: 40px;
+            font-size: 40px;
+        }
+        
+        .hero-subtitle {
+            max-width: 100%;
+        }
+        
+        .cta-buttons {
+            max-width: 100%;
+        }
+        
+        .btn-primary,
+        .btn-secondary {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        
+        .features-section {
+            max-width: 100%;
+            padding: 80px 20px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            padding: 40px 20px;
+        }
+        
+        .process-section {
+            max-width: 100%;
+            padding: 80px 20px;
+        }
+        
+        .process-grid {
+            max-width: 100%;
+            margin-top: 40px;
+        }
+        
+        .process-card {
+            margin-top: 10px;
+            padding: 30px 20px;
+        }
+        
+        .gamify-section {
+            max-width: 100%;
+            padding: 80px 20px;
+        }
+        
+        .gamify-content {
+            max-width: 100%;
+            margin-top: 40px;
+            flex-direction: column;
+        }
+        
+        .gamify-text,
+        .gamify-image {
+            max-width: 100%;
+            margin-top: 40px;
+        }
+        
+        .gamify-demo-content {
+            padding: 100px 20px;
+        }
+        
+        .footer {
+            max-width: 100%;
+            padding: 18px 20px 4px;
+        }
+        
+        .footer-content {
+            max-width: 100%;
+        }
+        
+        .footer-divider {
+            margin-top: 40px;
+        }
+    }
+</style>
+</head>
+<body>
+<header class="header">
+    <div class="logo-section">
+        <div class="logo"></div>
+    </div>
+    <div class="login-section">
+        <div class="login-text">Login or Signup!</div>
+        <div class="avatar-icon"></div>
+    </div>
+</header>
+
+<main class="main-content">
+    <!-- Hero Section -->
+    <section class="hero-heading">
+        <h1>AI-Powered Study Assistant for Students</h1>
+    </section>
+    
+    <div class="hero-subtitle">
+        <p>BenchMate helps you study smarter, not harder. Get personalized learning<br/>
+        experiences, instant answers to your questions, and gamified learning to make<br/>
+        studying fun.</p>
+    </div>
+    
+    <div class="cta-buttons">
+        <a href="#" class="btn-primary">Start Learning</a>
+        <a href="#" class="btn-secondary">Explore Gamify</a>
+    </div>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <h2 class="section-title">Why Choose BenchMate?</h2>
+        <p class="section-subtitle">Designed to help students learn more effectively and efficiently</p>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3 class="feature-title">AI-Powered Assistance</h3>
+                <p class="feature-description">Get instant answers to your questions with<br/>our advanced AI technology that<br/>understands context and provides detailed<br/>explanations.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎮</div>
+                <h3 class="feature-title">Gamified Learning</h3>
+                <p class="feature-description">Make studying fun with our game-based<br/>learning approach that rewards progress<br/>and keeps you motivated.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">Personalized Progress</h3>
+                <p class="feature-description">Track your learning journey with detailed<br/>analytics and personalized<br/>recommendations based on your<br/>performance.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process-section">
+        <h2 class="section-title">How BenchMate Works</h2>
+        <p class="section-subtitle">Getting started with your AI study assistant is easy</p>
+        
+        <div class="process-grid">
+            <div class="process-card">
+                <div class="process-number">1</div>
+                <h3 class="process-title">Sign Up</h3>
+                <p class="process-description">Create your free account and set up your<br/>academic profile with your subjects and<br/>goals.</p>
+            </div>
+            
+            <div class="process-card">
+                <div class="process-number">2</div>
+                <h3 class="process-title">Ask Questions</h3>
+                <p class="process-description">Type or speak your questions to<br/>BenchMate and get instant, accurate<br/>answers with explanations.</p>
+            </div>
+            
+            <div class="process-card">
+                <div class="process-number">3</div>
+                <h3 class="process-title">Play & Learn</h3>
+                <p class="process-description">Engage with our gamified learning<br/>modules to reinforce concepts and track<br/>your progress.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gamify Section -->
+    <section class="gamify-section">
+        <h2 class="section-title">Game-Based Learning with Gamify</h2>
+        <p class="section-subtitle">Make studying fun and engaging with our game-based approach</p>
+        
+        <div class="gamify-content">
+            <div class="gamify-text">
+                <h3 style="font-size: 19px; color: #333; font-weight: 700; line-height: 1.61; margin-bottom: 20px;">Learning Has Never Been This Fun</h3>
+                <p style="font-size: 15px; color: #333; font-weight: 400; line-height: 26px; margin-bottom: 31px;">Our Gamify section turns studying into an exciting adventure. Earn points,<br/>unlock achievements, and compete with friends while mastering your subjects.</p>
+                
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span class="feature-icon-small">✓</span>
+                        <span class="feature-text">Earn badges and rewards for completing challenges</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon-small">✓</span>
+                        <span class="feature-text">Compete with friends on leaderboards</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon-small">✓</span>
+                        <span class="feature-text">Solve interactive puzzles related to your subjects</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon-small">✓</span>
+                        <span class="feature-text">Track your progress with detailed analytics</span>
+                    </div>
+                </div>
+                
+                <a href="#" class="btn-primary">Explore Gamify</a>
+            </div>
+            
+            <div class="gamify-image">
+                <div class="gamify-demo">
+                    <div class="gamify-demo-content">
+                        <div class="gamify-vector"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-logo">
+            <div class="footer-logo-img"></div>
+        </div>
+        
+        <div class="footer-contact">
+            <h3 class="contact-title">Contact Us</h3>
+            
+            <div class="contact-item">
+                <div class="contact-icon" style="background-image: url('https://api.builder.io/api/v1/image/assets/TEMP/bf82e008eb5b12de46f5e8e9d6167ddf9d163bb4?placeholderIfAbsent=true&apiKey=f64508a8f0814a288226736a872b2cec');"></div>
+                <span>benchmate@gmail.com</span>
+            </div>
+            
+            <div class="contact-item">
+                <div class="contact-icon" style="background-image: url('https://api.builder.io/api/v1/image/assets/TEMP/5fd1c8240b56c0c0c0d6d4bef103aff0aa542551?placeholderIfAbsent=true&apiKey=f64508a8f0814a288226736a872b2cec');"></div>
+                <span>999 9987654321</span>
+            </div>
+            
+            <div class="social-links">
+                <div class="social-group">
+                    <div class="social-icon" style="background-image: url('https://api.builder.io/api/v1/image/assets/TEMP/64a3c2e4bb8cb44a0514861dbd0061dcadee5f93?placeholderIfAbsent=true&apiKey=f64508a8f0814a288226736a872b2cec'); width: 67px;"></div>
+                    <div class="social-icon" style="background-image: url('https://api.builder.io/api/v1/image/assets/TEMP/a469d5ff3cb90049b5a7c2332cf8942c12dbe4f2?placeholderIfAbsent=true&apiKey=f64508a8f0814a288226736a872b2cec');"></div>
+                </div>
+                <div class="social-group">
+                    <div class="social-icon" style="background-image: url('https://api.builder.io/api/v1/image/assets/TEMP/123e8a9ae8634e5e0aa7fd1e7c49ba01a7b1d62d?placeholderIfAbsent=true&apiKey=f64508a8f0814a288226736a872b2cec');"></div>
+                    <div class="social-icon" style="background-image: url('https://api.builder.io/api/v1/image/assets/TEMP/0822dd333caf40eff70da83f24cd47aaf9720a92?placeholderIfAbsent=true&apiKey=f64508a8f0814a288226736a872b2cec');"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <hr class="footer-divider">
+    <p class="footer-copyright">© 2025 BenchMate. All rights reserved.</p>
+</footer>
+</body>
+</html>
