@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -76,9 +76,16 @@ WSGI_APPLICATION = 'BenchMatee.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'default' : {
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'benchmate_db',              
+        'USER': 'root',               
+        'PASSWORD': 'h1b27p2b#',       
+        'HOST': 'localhost',                 
+        'PORT': '3306',                       
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'", # Recommended for MySQL compatibility
+        }
     }
 }
 
@@ -124,3 +131,16 @@ STATICFILES_DIRS = [BASE_DIR / 'static']  # only if you have a project-level sta
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'users.User'
+
+# adding login and logout redirect
+LOGIN_REDIRECT_URL = 'dashboard'
+
+LOGIN_URL = 'login' 
+
+LOGOUT_REDIRECT_URL = 'home'
+
+# media configuration
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
