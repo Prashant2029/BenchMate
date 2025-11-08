@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BenchMate - Student Dashboard</title>
+    <style>
+        /* Global CSS Reset and Base Styles */
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        /* Color Variables */
+        :root {
+          --primary-blue: #4a6cf7;
+          --primary-blue-light: rgba(74, 108, 247, 0.1);
+          --primary-blue-dark: #3a5cd8;
+          --text-dark: #222222;
+          --text-gray: #333333;
+          --text-medium: #555555;
+          --text-light: #666666;
+          --background-white: #ffffff;
+          --background-light: #f8f9fa;
+          --shadow-light: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
+          --shadow-medium: 0px 10px 30px 0px rgba(0, 0, 0, 0.1);
+          --shadow-hover: 0px 15px 40px 0px rgba(74, 108, 247, 0.15);
+          --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          --border-radius: 12px;
+        }
+
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+            color: var(--text-gray);
+        }
+
+        /* Header Styles - Same as landing page */
+        .header {
+          background: var(--background-white);
+          padding: 15px 5%;
+          height: 80px;
+          position: fixed;
+          width: 100%;
+          top: 0;
+          left: 0;
+          box-shadow: var(--shadow-light);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          z-index: 1000;
+          transition: var(--transition);
+        }
+
+        .nav {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+        }
+
+        .logo {
+          border-radius: 9px;
+          width: 120px;
+          height: auto;
+          object-fit: cover;
+          transition: var(--transition);
+        }
+
+        .header-right {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+
+        .login-or-signup {
+          color: var(--text-dark);
+          font-family: "Inter-Medium", sans-serif;
+          font-size: 16px;
+          font-weight: 500;
+          padding: 10px 20px;
+          border: 2px solid var(--primary-blue);
+          border-radius: 6px;
+          transition: var(--transition);
+          cursor: pointer;
+          white-space: nowrap;
+        }
+
+        .login-or-signup:hover {
+          background: var(--primary-blue);
+          color: var(--background-white);
+          transform: translateY(-2px);
+        }
+
+        .profile-icon {
+          width: 45px;
+          height: 45px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid var(--primary-blue-light);
+          transition: var(--transition);
+          cursor: pointer;
+        }
+
+        .profile-icon:hover {
+          transform: scale(1.1);
+          border-color: var(--primary-blue);
+          box-shadow: var(--shadow-hover);
+        }
+
+        /* Footer Styles - Same as landing page */
+        .footer {
+          background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+          padding: 80px 5% 40px;
+          width: 100%;
+          color: var(--background-white);
+        }
+
+        .footer-content {
+          max-width: 1200px;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 40px;
+        }
+
+        .footer-main {
+          display: flex;
+          justify-content: flex-end;
+          width: 100%;
+        }
+
+        .footer-right {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          text-align: right;
+          gap: 30px;
+        }
+
+        .footer-logo {
+          margin-bottom: 10px;
+        }
+
+        .footer-logo-img {
+          border-radius: 9px;
+          width: 150px;
+          height: auto;
+          object-fit: cover;
+          transition: var(--transition);
+        }
+
+        .footer-logo-img:hover {
+          transform: scale(1.05);
+        }
+
+        .contact-section {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 15px;
+        }
+
+        .contact-title {
+          color: var(--background-white);
+          font-family: "Inter-SemiBold", sans-serif;
+          font-size: 32px;
+          line-height: 1.2;
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+
+        .contact-info {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 8px;
+        }
+
+        .contact-email,
+        .contact-phone {
+          color: var(--background-white);
+          font-family: "Inter-SemiBold", sans-serif;
+          font-size: 18px;
+          line-height: 1.5;
+          font-weight: 600;
+          opacity: 0.9;
+          transition: var(--transition);
+        }
+
+        .contact-email:hover,
+        .contact-phone:hover {
+          opacity: 1;
+          transform: translateX(-5px);
+        }
+
+        .footer-bottom {
+          width: 100%;
+          text-align: center;
+          padding-top: 40px;
+          border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .copyright {
+          color: var(--background-white);
+          font-family: "Inter-Regular", sans-serif;
+          font-size: 14px;
+          line-height: 1.5;
+          font-weight: 400;
+          opacity: 0.8;
+        }
+
+        /* Dashboard Main Content */
+        .dashboard {
+          padding: 120px 5% 60px;
+          max-width: 1400px;
+          margin: 0 auto;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+          text-align: center;
+          margin-bottom: 60px;
+        }
+
+        .welcome-title {
+          color: var(--text-dark);
+          font-family: "Inter-Bold", sans-serif;
+          font-size: clamp(2rem, 4vw, 3rem);
+          line-height: 1.2;
+          font-weight: 700;
+          margin-bottom: 16px;
+          background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .welcome-subtitle {
+          color: var(--text-light);
+          font-family: "Inter-Regular", sans-serif;
+          font-size: 18px;
+          line-height: 1.6;
+          font-weight: 400;
+        }
+
+        /* Section Headers */
+        .section-header {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          margin-bottom: 30px;
+        }
+
+        .section-icon {
+          width: 50px;
+          height: 50px;
+          background: var(--primary-blue-light);
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: var(--transition);
+        }
+
+        .section-icon .symbol {
+          color: var(--primary-blue);
+          font-size: 24px;
+          transition: var(--transition);
+        }
+
+        .section-header:hover .section-icon {
+          transform: scale(1.1);
+          background: var(--primary-blue);
+        }
+
+        .section-header:hover .section-icon .symbol {
+          color: var(--background-white);
+        }
+
+        .section-title {
+          color: var(--text-dark);
+          font-family: "Inter-Bold", sans-serif;
+          font-size: 28px;
+          line-height: 1.3;
+          font-weight: 700;
+        }
+
+        /* Topic of the Day */
+        .topic-section {
+          margin-bottom: 60px;
+        }
+
+        .topic-card {
+          background: var(--background-white);
+          border-radius: var(--border-radius);
+          padding: 40px;
+          box-shadow: var(--shadow-light);
+          transition: var(--transition);
+          border: 2px solid transparent;
+        }
+
+        .topic-card:hover {
+          transform: translateY(-5px);
+          box-shadow: var(--shadow-hover);
+          border-color: var(--primary-blue-light);
+        }
+
+        .topic-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        }
+
+        .topic-name {
+          color: var(--text-dark);
+          font-family: "Inter-Bold", sans-serif;
+          font-size: 24px;
+          line-height: 1.3;
+          font-weight: 700;
+        }
+
+        .topic-description {
+          color: var(--text-light);
+          font-family: "Inter-Regular", sans-serif;
+          font-size: 16px;
+          line-height: 1.6;
+          font-weight: 400;
+          margin-bottom: 25px;
+        }
+
+        .topic-meta {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 25px;
+        }
+
+        .topic-category {
+          background: var(--primary-blue);
+          color: var(--background-white);
+          padding: 8px 16px;
+          border-radius: 20px;
+          font-family: "Inter-Medium", sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        .topic-actions {
+          display: flex;
+          gap: 15px;
+        }
+
+        .btn-primary {
+          background: var(--primary-blue);
+          border-radius: 8px;
+          padding: 12px 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          cursor: pointer;
+          transition: var(--transition);
+          border: none;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .btn-primary::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+          transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+          left: 100%;
+        }
+
+        .btn-primary:hover {
+          background: var(--primary-blue-dark);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-hover);
+        }
+
+        .btn-outline {
+          border-radius: 8px;
+          border: 2px solid var(--primary-blue);
+          padding: 12px 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          cursor: pointer;
+          transition: var(--transition);
+          background: transparent;
+        }
+
+        .btn-outline:hover {
+          background: var(--primary-blue);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-hover);
+        }
+
+        .btn-text {
+          color: var(--background-white);
+          font-family: "Inter-Medium", sans-serif;
+          font-size: 14px;
+          line-height: 1.5;
+          font-weight: 500;
+          position: relative;
+          z-index: 1;
+        }
+
+        .btn-outline .btn-text {
+          color: var(--primary-blue);
+          transition: color 0.3s ease;
+        }
+
+        .btn-outline:hover .btn-text {
+          color: var(--background-white);
+        }
+
+        /* Continue Learning Section */
+        .continue-section {
+          margin-bottom: 60px;
+        }
+
+        .continue-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+          gap: 30px;
+        }
+
+        .continue-card {
+          background: var(--background-white);
+          border-radius: var(--border-radius);
+          padding: 30px;
+          box-shadow: var(--shadow-light);
+          transition: var(--transition);
+          border: 2px solid transparent;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .continue-card:hover {
+          transform: translateY(-5px);
+          box-shadow: var(--shadow-hover);
+          border-color: var(--primary-blue-light);
+        }
+
+        .progress-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 20px;
+        }
+
+        .progress-circle {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: conic-gradient(var(--primary-blue) var(--progress, 0%), var(--primary-blue-light) 0%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+        }
+
+        .progress-circle::before {
+          content: '';
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          background: var(--background-white);
+          border-radius: 50%;
+        }
+
+        .progress-text {
+          position: relative;
+          color: var(--primary-blue);
+          font-family: "Inter-Bold", sans-serif;
+          font-size: 14px;
+          font-weight: 700;
+          z-index: 1;
+        }
+
+        .continue-title {
+          color: var(--text-dark);
+          font-family: "Inter-Bold", sans-serif;
+          font-size: 20px;
+          line-height: 1.3;
+          font-weight: 700;
+          margin-bottom: 10px;
+        }
+
+        .continue-description {
+          color: var(--text-light);
+          font-family: "Inter-Regular", sans-serif;
+          font-size: 14px;
+          line-height: 1.5;
+          font-weight: 400;
+          margin-bottom: 20px;
+        }
+
+        .progress-bar {
+          width: 100%;
+          height: 6px;
+          background: var(--primary-blue-light);
+          border-radius: 3px;
+          margin-bottom: 20px;
+          overflow: hidden;
+        }
+
+        .progress-fill {
+          height: 100%;
+          background: var(--primary-blue);
+          border-radius: 3px;
+          transition: width 0.3s ease;
+        }
+
+        /* Subjects Section */
+        .subjects-section {
+          margin-bottom: 60px;
+        }
+
+        .subjects-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 30px;
+        }
+
+        .subject-card {
+          background: var(--background-white);
+          border-radius: var(--border-radius);
+          padding: 40px 30px 30px;
+          box-shadow: var(--shadow-light);
+          transition: var(--transition);
+          border: 2px solid transparent;
+          text-align: center;
+          position: relative;
+        }
+
+        .subject-card:hover {
+          transform: translateY(-8px);
+          box-shadow: var(--shadow-hover);
+          border-color: var(--primary-blue-light);
+        }
+
+        .subject-icon {
+          width: 80px;
+          height: 80px;
+          background: linear-gradient(135deg, var(--primary-blue-light), rgba(74, 108, 247, 0.2));
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0 auto 25px;
+          transition: var(--transition);
+        }
+
+        .subject-card:hover .subject-icon {
+          transform: scale(1.1);
+        }
+
+        .subject-symbol {
+          color: var(--primary-blue);
+          font-size: 32px;
+          line-height: 1;
+          transition: var(--transition);
+        }
+
+        .subject-card:hover .subject-symbol {
+          transform: scale(1.2);
+        }
+
+        .subject-name {
+          color: var(--text-dark);
+          font-family: "Inter-Bold", sans-serif;
+          font-size: 20px;
+          line-height: 1.3;
+          font-weight: 700;
+          margin-bottom: 15px;
+        }
+
+        .subject-description {
+          color: var(--text-light);
+          font-family: "Inter-Regular", sans-serif;
+          font-size: 14px;
+          line-height: 1.5;
+          font-weight: 400;
+          margin-bottom: 25px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+          .continue-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .subjects-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .footer-content {
+            align-items: center;
+          }
+
+          .footer-right {
+            align-items: center;
+            text-align: center;
+          }
+
+          .contact-section {
+            align-items: center;
+          }
+
+          .contact-email:hover,
+          .contact-phone:hover {
+            transform: translateY(-2px);
+          }
+
+          .header-right {
+            gap: 15px;
+          }
+
+          .login-or-signup {
+            padding: 8px 16px;
+            font-size: 14px;
+          }
+
+          .profile-icon {
+            width: 40px;
+            height: 40px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .dashboard {
+            padding: 100px 20px 40px;
+          }
+
+          .subjects-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .topic-actions {
+            flex-direction: column;
+          }
+
+          .header {
+            padding: 15px 20px;
+          }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="navbar-container"></div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1 class="welcome-title">Welcome back, Student!</h1>
+            <p class="welcome-subtitle">Ready to continue your learning journey?</p>
+        </section>
+
+        <!-- Topic of the Day -->
+        <section class="topic-section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <div class="symbol">🔍</div>
+                </div>
+                <h2 class="section-title">Topic of the Day</h2>
+            </div>
+            <div class="topic-card">
+                <div class="topic-header">
+                    <h3 class="topic-name">Quadratic Equations</h3>
+                </div>
+                <p class="topic-description">
+                    Explore quadratic equations — what they are, why they matter, and how to master them
+                </p>
+                <div class="topic-meta">
+                    <div class="topic-category">Mathematics</div>
+                    <div class="topic-actions">
+                        <a href="#" class="btn-primary">
+                            <span class="btn-text">Start Learning</span>
+                        </a>
+                        <a href="#" class="btn-outline">
+                            <span class="btn-text">Save for Later</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Continue Learning -->
+        <section class="continue-section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <div class="symbol">📚</div>
+                </div>
+                <h2 class="section-title">Continue Your Previous Topic</h2>
+            </div>
+            <div class="continue-grid">
+                <div class="continue-card">
+                    <div class="progress-header">
+                        <h3 class="continue-title">Algebra: Quadratic Equations</h3>
+                        <div class="progress-circle" style="--progress: 65%">
+                            <span class="progress-text">65%</span>
+                        </div>
+                    </div>
+                    <p class="continue-description">
+                        You were learning about solving quadratic equations using different methods.
+                    </p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%"></div>
+                    </div>
+                    <a href="#" class="btn-primary">
+                        <span class="btn-text">Continue</span>
+                    </a>
+                </div>
+                <div class="continue-card">
+                    <div class="progress-header">
+                        <h3 class="continue-title">एक चिहान</h3>
+                        <div class="progress-circle" style="--progress: 40%">
+                            <span class="progress-text">40%</span>
+                        </div>
+                    </div>
+                    <p class="continue-description">
+                        You were exploring about a progressive Nepali social realism novel by Hridaya Chandra Singh Pradhan.
+                    </p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 40%"></div>
+                    </div>
+                    <a href="#" class="btn-primary">
+                        <span class="btn-text">Continue</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Explore Subjects -->
+        <section class="subjects-section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <div class="symbol">🌟</div>
+                </div>
+                <h2 class="section-title">Explore Subjects</h2>
+            </div>
+            <div class="subjects-grid">
+                <div class="subject-card">
+                    <div class="subject-icon">
+                        <div class="subject-symbol">🧪</div>
+                    </div>
+                    <h3 class="subject-name">Science</h3>
+                    <p class="subject-description">
+                        Explore biology, chemistry, physics and more
+                    </p>
+                    <a href="#" class="btn-primary">
+                        <span class="btn-text">Explore Science</span>
+                    </a>
+                </div>
+                <div class="subject-card">
+                    <div class="subject-icon">
+                        <div class="subject-symbol">📐</div>
+                    </div>
+                    <h3 class="subject-name">Mathematics</h3>
+                    <p class="subject-description">
+                        Algebra, geometry, calculus and statistics
+                    </p>
+                    <a href="#" class="btn-primary">
+                        <span class="btn-text">Explore Math</span>
+                    </a>
+                </div>
+                <div class="subject-card">
+                    <div class="subject-icon">
+                        <div class="subject-symbol">📖</div>
+                    </div>
+                    <h3 class="subject-name">नेपाली</h3>
+                    <p class="subject-description">
+                        Nepali stories, poems, novels biographies and Nepali "व्याकरण"
+                    </p>
+                    <a href="#" class="btn-primary">
+                        <span class="btn-text">Explore नेपाली</span>
+                    </a>
+                </div>
+                <div class="subject-card">
+                    <div class="subject-icon">
+                        <div class="subject-symbol">📝</div>
+                    </div>
+                    <h3 class="subject-name">English</h3>
+                    <p class="subject-description">
+                        Literature, grammar, and writing skills
+                    </p>
+                    <a href="#" class="btn-primary">
+                        <span class="btn-text">Explore English</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer will be loaded here -->
+    <div id="footer-container"></div>
+
+    <script>
+        // Load Navbar and Footer
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load Navbar
+            fetch('Navbar.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Navbar not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading navbar:', error);
+                    document.getElementById('navbar-container').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Navbar failed to load</div>';
+                });
+
+            // Load Footer
+            fetch('Footer.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Footer not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer-container').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Footer failed to load</div>';
+                });
+        });
+    </script>
+</body>
+</html>

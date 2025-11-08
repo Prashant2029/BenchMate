@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - BenchMate</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #f8f9fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .register {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0px 15px 40px 0px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      min-height: 600px;
+    }
+
+    .welcome-section {
+      background: linear-gradient(143.09deg, rgba(74, 108, 247, 1) 0%, rgba(58, 92, 216, 1) 100%);
+      flex: 1;
+      padding: 60px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: white;
+    }
+
+    .welcome-section h2 {
+      font-size: 27px;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+
+    .welcome-section p {
+      opacity: 0.9;
+      font-size: 14.5px;
+      line-height: 1.7;
+    }
+
+    .form-section {
+      flex: 1.2;
+      padding: 40px;
+    }
+
+    .form-tabs {
+      display: flex;
+      border-bottom: 1px solid #eeeeee;
+      margin-bottom: 30px;
+    }
+
+    .tab {
+      padding: 12px 20px;
+      cursor: pointer;
+      color: #999;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .tab.active {
+      color: #4a6cf7;
+    }
+
+    .tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 10%;
+      width: 80%;
+      height: 3px;
+      background: #4a6cf7;
+      border-radius: 3px 3px 0 0;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .input-with-icon {
+      position: relative;
+    }
+
+    .input-with-icon input {
+      width: 100%;
+      padding: 16px 16px 16px 46px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      transition: border-color 0.3s;
+    }
+
+    .input-with-icon input:focus {
+      border-color: #4a6cf7;
+      outline: none;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #777;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #777;
+      cursor: pointer;
+    }
+
+    .error-message {
+      color: #e74c3c;
+      font-size: 13px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 15.75px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-primary {
+      background: #4a6cf7;
+      color: white;
+      margin-top: 30px;
+    }
+
+    .btn-primary:hover {
+      background: #3a5cd8;
+    }
+
+    .btn-google {
+      background: white;
+      border: 2px solid #000;
+      color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 15px;
+      position: relative;
+    }
+
+    .btn-google img {
+      width: 20px;
+      margin-right: 10px;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 13px;
+    }
+
+    .login-link a {
+      color: #4a6cf7;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      height: 50px;
+    }
+
+    .copyright {
+      text-align: center;
+      padding: 20px 0;
+      color: #666;
+      font-size: 14px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .register {
+        flex-direction: column;
+        margin: 20px;
+      }
+      
+      .welcome-section {
+        padding: 40px 30px;
+      }
+      
+      .form-section {
+        padding: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <a href="Landing.html" class="logo-link">
+      <img src="images\logo0.jpg" alt="BenchMate" class="logo">
+    </a>
+  </div>
+
+  <div class="register">
+    <div class="welcome-section">
+      <h2>Welcome to BenchMate</h2>
+      <p>Sign up to create your workspace, get started with our powerful productivity tools.</p>
+    </div>
+    
+    <div class="form-section">
+      <div class="form-tabs">
+        <div class="tab" onclick="switchTab('login')">Login</div>
+        <div class="tab active" onclick="switchTab('register')">Register</div>
+      </div>
+      
+      <form id="registerForm" class="form">
+        <div class="form-group">
+          <label for="email">Email Address / Username</label>
+          <div class="input-with-icon">
+            <input type="text" id="email" name="email" placeholder="Enter your email or username" required>
+            <i class="fas fa-envelope input-icon"></i>
+          </div>
+          <div class="error-message" id="emailError">Please enter a valid email address</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-with-icon">
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <i class="fas fa-lock input-icon"></i>
+            <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+          </div>
+          <div class="error-message" id="passwordError">Password must be at least 8 characters</div>
+        </div>
+        
+        <div class="form-group">
+          <label for="confirmPassword">Re-enter Password</label>
+          <div class="input-with-icon">
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" required>
+            <i class="fas fa-lock input-icon"></i>
+            <i class="fas fa-eye password-toggle" id="toggleConfirmPassword"></i>
+          </div>
+          <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Sign up</button>
+        
+        <div class="login-link">
+          Already have an account? <a href="#" onclick="switchTab('login')">Login here</a>
+        </div>
+        
+        <button type="button" class="btn btn-google">
+          <img src="images\google.jpg" alt="Google">
+          Sign Up with Google
+        </button>
+      </form>
+    </div>
+  </div>
+  
+  <div class="copyright">
+    © 2025 BenchMate. All rights reserved.
+  </div>
+
+  <script>
+    // Switch between login and register tabs
+    function switchTab(tab) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      
+      if (tab === 'login') {
+        document.querySelector('.tab:first-child').classList.add('active');
+        // In a real app, you would switch to the login form here
+      } else {
+        document.querySelector('.tab:last-child').classList.add('active');
+      }
+    }
+    
+    // Toggle password visibility
+    document.getElementById('togglePassword').addEventListener('click', function() {
+      const passwordInput = document.getElementById('password');
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+    
+    document.getElementById('toggleConfirmPassword').addEventListener('click', function() {
+      const confirmPasswordInput = document.getElementById('confirmPassword');
+      const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      confirmPasswordInput.setAttribute('type', type);
+      this.classList.toggle('fa-eye');
+      this.classList.toggle('fa-eye-slash');
+    });
+    
+    // Form validation
+    document.getElementById('registerForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      let isValid = true;
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        document.getElementById('emailError').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('emailError').style.display = 'none';
+      }
+      
+      // Password validation
+      if (password.length < 8) {
+        document.getElementById('passwordError').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('passwordError').style.display = 'none';
+      }
+      
+      // Confirm password validation
+      if (password !== confirmPassword) {
+        document.getElementById('confirmPasswordError').style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById('confirmPasswordError').style.display = 'none';
+      }
+      
+      if (isValid) {
+        // In a real application, you would submit the form here
+        alert('Registration successful!');
+        // Reset form
+        this.reset();
+      }
+    });
+  </script>
+</body>
+</html>

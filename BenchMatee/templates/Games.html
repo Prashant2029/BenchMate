@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games | BenchMate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: #2d2e3a;
+            min-height: 100vh;
+            color: white;
+        }
+
+        /* Games Container */
+        .games-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-title {
+            color: #4a6cf7;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .page-subtitle {
+            color: #e0e0e0;
+            font-size: 18px;
+            font-weight: 500;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Games Grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        /* Game Card */
+        .game-card {
+            background: #3a3b4a;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border: 3px solid #4a6cf7;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(74, 108, 247, 0.3);
+        }
+
+        .game-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            background: linear-gradient(135deg, #4a6cf7 0%, #3a5cd8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+        }
+
+        .game-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title {
+            color: #4a6cf7;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .game-description {
+            color: #e0e0e0;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .game-features {
+            margin-bottom: 20px;
+        }
+
+        .game-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: #d0d0d0;
+            font-size: 14px;
+        }
+
+        .game-feature i {
+            margin-right: 10px;
+            color: #4a6cf7;
+            width: 16px;
+        }
+
+        .game-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #4a6cf7;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #3a5cd8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+        }
+
+        /* Flashcards Section */
+        .flashcards-section {
+            margin: 60px 0;
+        }
+
+        .section-title {
+            color: #4a6cf7;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .flashcards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .flashcard-card {
+            background: #3a3b4a;
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 3px solid #4a6cf7;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .flashcard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(74, 108, 247, 0.3);
+        }
+
+        .flashcard-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .flashcard-icon {
+            font-size: 32px;
+            color: #4a6cf7;
+            margin-right: 15px;
+        }
+
+        .flashcard-title {
+            color: #4a6cf7;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .flashcard-description {
+            color: #e0e0e0;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .flashcard-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(74, 108, 247, 0.1);
+            border-radius: 8px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            color: #4a6cf7;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #d0d0d0;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Flashcard Modal */
+        .flashcard-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flashcard-modal-content {
+            background: #3a3b4a;
+            border-radius: 16px;
+            width: 500px;
+            max-width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            border: 3px solid #4a6cf7;
+        }
+
+        .flashcard-modal-header {
+            background: #4a6cf7;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .flashcard-modal-title {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .flashcard-modal-body {
+            padding: 30px;
+        }
+
+        .flashcard {
+            background: #2d2e3a;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #4a6cf7;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flashcard:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(74, 108, 247, 0.3);
+        }
+
+        .flashcard-question, .flashcard-answer {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #ffffff;
+        }
+
+        .flashcard-answer {
+            display: none;
+        }
+
+        .flashcard.show-answer .flashcard-question {
+            display: none;
+        }
+
+        .flashcard.show-answer .flashcard-answer {
+            display: block;
+        }
+
+        .flashcard-hint {
+            color: #8e8ea0;
+            font-size: 14px;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .flashcard-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .flashcard-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .flashcard-btn-primary {
+            background: #4a6cf7;
+            color: white;
+        }
+
+        .flashcard-btn-primary:hover {
+            background: #3a5cd8;
+            transform: translateY(-2px);
+        }
+
+        .flashcard-btn-secondary {
+            background: #565869;
+            color: white;
+        }
+
+        .flashcard-btn-secondary:hover {
+            background: #4a4b5a;
+            transform: translateY(-2px);
+        }
+
+        .flashcard-progress {
+            text-align: center;
+            margin-top: 20px;
+            color: #8e8ea0;
+            font-size: 14px;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Coming Soon Section */
+        .coming-soon {
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .coming-soon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .coming-soon-card {
+            background: #3a3b4a;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid #4a6cf7;
+        }
+
+        .coming-soon-card:hover {
+            background: rgba(74, 108, 247, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(74, 108, 247, 0.2);
+        }
+
+        .coming-soon-card:hover .coming-soon-text {
+            color: #ffffff;
+        }
+
+        .coming-soon-icon {
+            font-size: 40px;
+            color: #4a6cf7;
+            margin-bottom: 15px;
+        }
+
+        .coming-soon-title {
+            color: #4a6cf7;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .coming-soon-text {
+            color: #e0e0e0;
+            font-size: 14px;
+            line-height: 1.5;
+            transition: color 0.3s ease;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 28px;
+            }
+            
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .games-container {
+                padding: 30px 15px;
+            }
+
+            .flashcards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flashcard-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .flashcard-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Include Navbar -->
+    <header id="navbar-container"></header>
+
+    <!-- Games Content -->
+    <div class="games-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Learning Games</h1>
+        </div>
+
+        <!-- Games Grid -->
+        <div class="games-grid">
+            <!-- Pop Quiz Game -->
+            <div class="game-card">
+                <div class="game-image">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="game-content">
+                    <h2 class="game-title">Pop Quiz</h2>
+                    <p class="game-description">
+                        Test your knowledge with quick quizzes on various subjects. Answer multiple-choice questions and get instant feedback with detailed explanations.
+                    </p>
+                    <div class="game-features">
+                        <div class="game-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Multiple subjects available</span>
+                        </div>
+                        <div class="game-feature">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Detailed explanations</span>
+                        </div>
+                        <div class="game-feature">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Track your progress</span>
+                        </div>
+                    </div>
+                    <div class="game-actions">
+                        <a href="PopQuizGame.html" class="btn btn-primary">
+                            <i class="fas fa-play"></i>
+                            Play Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sequence Game -->
+            <div class="game-card">
+                <div class="game-image">
+                    <i class="fas fa-sort-amount-down"></i>
+                </div>
+                <div class="game-content">
+                    <h2 class="game-title">Sequence</h2>
+                    <p class="game-description">
+                        Arrange items in the correct order based on logical patterns, chronological events, or procedural steps. Perfect for learning sequences and processes.
+                    </p>
+                    <div class="game-features">
+                        <div class="game-feature">
+                            <i class="fas fa-list-ol"></i>
+                            <span>Various sequence types</span>
+                        </div>
+                        <div class="game-feature">
+                            <i class="fas fa-history"></i>
+                            <span>Historical timelines</span>
+                        </div>
+                        <div class="game-feature">
+                            <i class="fas fa-cogs"></i>
+                            <span>Process ordering</span>
+                        </div>
+                    </div>
+                    <div class="game-actions">
+                        <a href="SequenceGame.html" class="btn btn-primary">
+                            <i class="fas fa-play"></i>
+                            Play Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flashcards Section -->
+        <div class="flashcards-section">
+            <h2 class="section-title">Interactive Flashcards</h2>
+            <div class="flashcards-grid">
+                <!-- Math Flashcards -->
+                <div class="flashcard-card">
+                    <div class="flashcard-header">
+                        <div class="flashcard-icon">
+                            <i class="fas fa-square-root-alt"></i>
+                        </div>
+                        <h3 class="flashcard-title">Math Formulas</h3>
+                    </div>
+                    <p class="flashcard-description">
+                        Master essential mathematical formulas and equations with interactive flashcards. Perfect for algebra, geometry, and calculus.
+                    </p>
+                    <div class="flashcard-stats">
+                        <div class="stat">
+                            <div class="stat-number">15</div>
+                            <div class="stat-label">Cards</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">92%</div>
+                            <div class="stat-label">Mastery</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">Decks</div>
+                        </div>
+                    </div>
+                    <div class="game-actions">
+                        <button class="btn btn-primary" onclick="openFlashcardModal('math')">
+                            <i class="fas fa-play"></i>
+                            Study Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Science Flashcards -->
+                <div class="flashcard-card">
+                    <div class="flashcard-header">
+                        <div class="flashcard-icon">
+                            <i class="fas fa-atom"></i>
+                        </div>
+                        <h3 class="flashcard-title">Science Terms</h3>
+                    </div>
+                    <p class="flashcard-description">
+                        Learn key scientific concepts, definitions, and terminology across biology, chemistry, and physics.
+                    </p>
+                    <div class="flashcard-stats">
+                        <div class="stat">
+                            <div class="stat-number">24</div>
+                            <div class="stat-label">Cards</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">85%</div>
+                            <div class="stat-label">Mastery</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">4</div>
+                            <div class="stat-label">Decks</div>
+                        </div>
+                    </div>
+                    <div class="game-actions">
+                        <button class="btn btn-primary" onclick="openFlashcardModal('science')">
+                            <i class="fas fa-play"></i>
+                            Study Now
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Vocabulary Flashcards -->
+                <div class="flashcard-card">
+                    <div class="flashcard-header">
+                        <div class="flashcard-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 class="flashcard-title">Vocabulary Builder</h3>
+                    </div>
+                    <p class="flashcard-description">
+                        Expand your vocabulary with carefully selected words, definitions, and usage examples for effective communication.
+                    </p>
+                    <div class="flashcard-stats">
+                        <div class="stat">
+                            <div class="stat-number">50</div>
+                            <div class="stat-label">Cards</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">78%</div>
+                            <div class="stat-label">Mastery</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">2</div>
+                            <div class="stat-label">Decks</div>
+                        </div>
+                    </div>
+                    <div class="game-actions">
+                        <button class="btn btn-primary" onclick="openFlashcardModal('vocabulary')">
+                            <i class="fas fa-play"></i>
+                            Study Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coming Soon Section -->
+        <div class="coming-soon">
+            <h2 class="section-title">More Games Coming Soon</h2>
+            <div class="coming-soon-grid">
+                <div class="coming-soon-card">
+                    <div class="coming-soon-icon">
+                        <i class="fas fa-puzzle-piece"></i>
+                    </div>
+                    <h3 class="coming-soon-title">Crossword Challenge</h3>
+                    <p class="coming-soon-text">Solve subject-specific crossword puzzles to reinforce vocabulary and concepts.</p>
+                </div>
+                <div class="coming-soon-card">
+                    <div class="coming-soon-icon">
+                        <i class="fas fa-chess-board"></i>
+                    </div>
+                    <h3 class="coming-soon-title">Match It</h3>
+                    <p class="coming-soon-text">Match terms with their definitions or concepts with their examples in this memory-style game.</p>
+                </div>
+                <div class="coming-soon-card">
+                    <div class="coming-soon-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="coming-soon-title">Knowledge Race</h3>
+                    <p class="coming-soon-text">Compete against the clock to answer as many questions correctly as possible.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flashcard Modal -->
+    <div class="flashcard-modal" id="flashcardModal">
+        <div class="flashcard-modal-content">
+            <div class="flashcard-modal-header">
+                <h3 class="flashcard-modal-title" id="flashcardModalTitle">Math Formulas</h3>
+                <button class="close-button" onclick="closeFlashcardModal()">×</button>
+            </div>
+            <div class="flashcard-modal-body">
+                <div class="flashcard" id="currentFlashcard" onclick="toggleFlashcard()">
+                    <div class="flashcard-question" id="flashcardQuestion">
+                        What is the quadratic formula?
+                    </div>
+                    <div class="flashcard-answer" id="flashcardAnswer">
+                        The quadratic formula is x = [-b ± √(b² - 4ac)] / 2a, used to solve quadratic equations of the form ax² + bx + c = 0.
+                    </div>
+                </div>
+                <div class="flashcard-hint">Click the card to reveal the answer</div>
+                <div class="flashcard-actions">
+                    <button class="flashcard-btn flashcard-btn-secondary" onclick="previousFlashcard()">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="flashcard-btn flashcard-btn-primary" onclick="nextFlashcard()">
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                <div class="flashcard-progress" id="flashcardProgress">
+                    Card 1 of 5
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load external navbar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load navbar
+            fetch('Navbar.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Navbar not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                    
+                    // Set active state for Games link
+                    setTimeout(() => {
+                        const gamesLink = document.querySelector('a[href="Games.html"]');
+                        const currentLinks = document.querySelectorAll('.nav-link.active');
+                        
+                        // Remove active class from all links first
+                        currentLinks.forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        
+                        // Add active class to Games link
+                        if (gamesLink) {
+                            gamesLink.classList.add('active');
+                        }
+                    }, 100);
+                })
+                .catch(error => {
+                    console.error('Error loading navbar:', error);
+                    document.getElementById('navbar-container').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Navbar failed to load</div>';
+                });
+        });
+
+        // Flashcard functionality
+        let currentDeck = null;
+        let currentCardIndex = 0;
+        
+        const flashcardDecks = {
+            math: {
+                title: "Math Formulas",
+                cards: [
+                    { question: "What is the quadratic formula?", answer: "The quadratic formula is x = [-b ± √(b² - 4ac)] / 2a, used to solve quadratic equations of the form ax² + bx + c = 0." },
+                    { question: "What is the Pythagorean theorem?", answer: "In a right triangle, a² + b² = c², where c is the hypotenuse and a and b are the other two sides." },
+                    { question: "What is the formula for the area of a circle?", answer: "The area of a circle is A = πr², where r is the radius of the circle." },
+                    { question: "What is the formula for the volume of a sphere?", answer: "The volume of a sphere is V = (4/3)πr³, where r is the radius." },
+                    { question: "What is the formula for the slope of a line?", answer: "The slope of a line is m = (y₂ - y₁) / (x₂ - x₁), where (x₁, y₁) and (x₂, y₂) are two points on the line." }
+                ]
+            },
+            science: {
+                title: "Science Terms",
+                cards: [
+                    { question: "What is photosynthesis?", answer: "Photosynthesis is the process by which plants convert light energy, water, and carbon dioxide into glucose and oxygen." },
+                    { question: "What is mitosis?", answer: "Mitosis is the process of cell division that results in two identical daughter cells, each with the same number of chromosomes as the parent cell." },
+                    { question: "What is DNA?", answer: "DNA (Deoxyribonucleic acid) is the molecule that carries genetic instructions for the development, functioning, growth, and reproduction of all known organisms." },
+                    { question: "What is homeostasis?", answer: "Homeostasis is the ability of an organism to maintain a stable internal environment despite changes in external conditions." },
+                    { question: "What is an ecosystem?", answer: "An ecosystem is a community of living organisms in conjunction with the nonliving components of their environment, interacting as a system." }
+                ]
+            },
+            vocabulary: {
+                title: "Vocabulary Builder",
+                cards: [
+                    { question: "What does 'ephemeral' mean?", answer: "Ephemeral means lasting for a very short time." },
+                    { question: "What does 'ubiquitous' mean?", answer: "Ubiquitous means present, appearing, or found everywhere." },
+                    { question: "What does 'paradigm' mean?", answer: "Paradigm means a typical example or pattern of something; a model." },
+                    { question: "What does 'eloquent' mean?", answer: "Eloquent means fluent or persuasive in speaking or writing." },
+                    { question: "What does 'ambiguous' mean?", answer: "Ambiguous means open to more than one interpretation; not having one obvious meaning." }
+                ]
+            }
+        };
+
+        function openFlashcardModal(deckName) {
+            currentDeck = flashcardDecks[deckName];
+            currentCardIndex = 0;
+            
+            document.getElementById('flashcardModalTitle').textContent = currentDeck.title;
+            updateFlashcard();
+            document.getElementById('flashcardModal').style.display = 'flex';
+        }
+
+        function closeFlashcardModal() {
+            document.getElementById('flashcardModal').style.display = 'none';
+            document.getElementById('currentFlashcard').classList.remove('show-answer');
+        }
+
+        function toggleFlashcard() {
+            document.getElementById('currentFlashcard').classList.toggle('show-answer');
+        }
+
+        function nextFlashcard() {
+            if (currentCardIndex < currentDeck.cards.length - 1) {
+                currentCardIndex++;
+                updateFlashcard();
+            }
+        }
+
+        function previousFlashcard() {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                updateFlashcard();
+            }
+        }
+
+        function updateFlashcard() {
+            const card = currentDeck.cards[currentCardIndex];
+            document.getElementById('flashcardQuestion').textContent = card.question;
+            document.getElementById('flashcardAnswer').textContent = card.answer;
+            document.getElementById('flashcardProgress').textContent = `Card ${currentCardIndex + 1} of ${currentDeck.cards.length}`;
+            document.getElementById('currentFlashcard').classList.remove('show-answer');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('flashcardModal');
+            if (event.target === modal) {
+                closeFlashcardModal();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subjects - BenchMate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Color Variables */
+        :root {
+            --blue: linear-gradient(88.45deg, rgba(74, 108, 247, 1) 0%, rgba(58, 92, 216, 1) 100%);
+            --primary-blue: #4a6cf7;
+            --primary-blue-light: rgba(74, 108, 247, 0.1);
+            --primary-blue-dark: #3a5cd8;
+            --text-dark: #222222;
+            --text-gray: #333333;
+            --text-medium: #555555;
+            --text-light: #666666;
+            --background-white: #ffffff;
+            --background-light: #f8f9fa;
+            --shadow-light: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0px 10px 30px 0px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0px 15px 40px 0px rgba(74, 108, 247, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main Content Styles */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            flex: 1;
+        }
+
+        .page-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .page-title {
+            color: #222222;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .page-subtitle {
+            color: #666666;
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Subjects Grid */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .subject-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .subject-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .maths .subject-icon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .english .subject-icon { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .nepali .subject-icon { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .science .subject-icon { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+
+        .subject-name {
+            color: #222222;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subject-description {
+            color: #666666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .subject-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eeeeee;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            color: #4a6cf7;
+            font-size: 18px;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666666;
+            font-size: 12px;
+        }
+
+        .subject-progress {
+            margin-bottom: 20px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .progress-text {
+            color: #666666;
+            font-size: 14px;
+        }
+
+        .progress-percentage {
+            color: #4a6cf7;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            background: #eef4ff;
+            border-radius: 4px;
+            height: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #4a6cf7;
+            border-radius: 4px;
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .subject-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+            text-decoration: none;
+            border: none;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: #4a6cf7;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #3a5cd8;
+        }
+
+        /* Featured Section */
+        .featured-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            color: #222222;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #4a6cf7;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .featured-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .featured-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .featured-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 20px;
+            color: white;
+            background: var(--primary-blue);
+        }
+
+        .featured-name {
+            color: #222222;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .featured-description {
+            color: #666666;
+            font-size: 14px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .featured-actions {
+            margin-top: auto;
+        }
+
+        .featured-btn {
+            display: inline-block;
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+            text-decoration: none;
+            background: #4a6cf7;
+            border-radius: 6px;
+            padding: 10px 20px;
+            transition: all 0.3s;
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .featured-btn:hover {
+            background: #3a5cd8;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+            padding: 80px 5% 40px;
+            width: 100%;
+            color: var(--background-white);
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 40px;
+        }
+
+        .footer-main {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+        }
+
+        .footer-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+            gap: 30px;
+        }
+
+        .footer-logo {
+            margin-bottom: 10px;
+        }
+
+        .footer-logo-img {
+            border-radius: 9px;
+            width: 150px;
+            height: auto;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .footer-logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        .contact-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .contact-title {
+            color: var(--background-white);
+            font-family: "Inter-SemiBold", sans-serif;
+            font-size: 32px;
+            line-height: 1.2;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .contact-email,
+        .contact-phone {
+            color: var(--background-white);
+            font-family: "Inter-SemiBold", sans-serif;
+            font-size: 18px;
+            line-height: 1.5;
+            font-weight: 600;
+            opacity: 0.9;
+            transition: var(--transition);
+        }
+
+        .contact-email:hover,
+        .contact-phone:hover {
+            opacity: 1;
+            transform: translateX(-5px);
+        }
+
+        .footer-bottom {
+            width: 100%;
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .copyright {
+            color: var(--background-white);
+            font-family: "Inter-Regular", sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 28px;
+            }
+            
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .featured-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                align-items: center;
+            }
+
+            .footer-right {
+                align-items: center;
+                text-align: center;
+            }
+
+            .contact-section {
+                align-items: center;
+            }
+
+            .contact-email:hover,
+            .contact-phone:hover {
+                transform: translateY(-2px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .subject-card {
+                padding: 20px;
+            }
+            
+            .subject-name {
+                font-size: 20px;
+            }
+            
+            .featured-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Include Navigation Bar -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Page Header -->
+        <section class="page-header">
+            <h1 class="page-title">Explore Subjects</h1>
+            <p class="page-subtitle">Choose a subject to start learning with interactive lessons, practice exercises, and quizzes</p>
+        </section>
+
+        <!-- Subjects Grid -->
+        <div class="subjects-grid">
+            <!-- Mathematics -->
+            <div class="subject-card maths">
+                <div class="subject-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h2 class="subject-name">Mathematics</h2>
+                <p class="subject-description">Master algebra, geometry, calculus and problem-solving techniques with interactive lessons and practice problems.</p>
+                
+                <div class="subject-stats">
+                    <div class="stat">
+                        <span class="stat-value">24</span>
+                        <span class="stat-label">Lessons</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">156</span>
+                        <span class="stat-label">Exercises</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">8</span>
+                        <span class="stat-label">Quizzes</span>
+                    </div>
+                </div>
+                
+                <div class="subject-progress">
+                    <div class="progress-info">
+                        <span class="progress-text">Your progress</span>
+                        <span class="progress-percentage">65%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 65%"></div>
+                    </div>
+                </div>
+                
+                <div class="subject-actions">
+                    <a href="StudySubject.html" class="btn btn-primary">
+                        <i class="fas fa-play"></i>
+                        Continue
+                    </a>
+                </div>
+            </div>
+
+            <!-- English -->
+            <div class="subject-card english">
+                <div class="subject-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h2 class="subject-name">English</h2>
+                <p class="subject-description">Improve grammar, vocabulary, reading comprehension and writing skills through engaging activities and literature.</p>
+                
+                <div class="subject-stats">
+                    <div class="stat">
+                        <span class="stat-value">18</span>
+                        <span class="stat-label">Lessons</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">89</span>
+                        <span class="stat-label">Exercises</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">6</span>
+                        <span class="stat-label">Quizzes</span>
+                    </div>
+                </div>
+                
+                <div class="subject-progress">
+                    <div class="progress-info">
+                        <span class="progress-text">Your progress</span>
+                        <span class="progress-percentage">42%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 42%"></div>
+                    </div>
+                </div>
+                
+                <div class="subject-actions">
+                    <a href="#" class="btn btn-primary">
+                        <i class="fas fa-play"></i>
+                        Continue
+                    </a>
+                </div>
+            </div>
+
+            <!-- Nepali -->
+            <div class="subject-card nepali">
+                <div class="subject-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <h2 class="subject-name">नेपाली</h2>
+                <p class="subject-description">Learn Nepali grammar, literature, writing skills and cultural context through interactive lessons and stories.</p>
+                
+                <div class="subject-stats">
+                    <div class="stat">
+                        <span class="stat-value">15</span>
+                        <span class="stat-label">Lessons</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">72</span>
+                        <span class="stat-label">Exercises</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">5</span>
+                        <span class="stat-label">Quizzes</span>
+                    </div>
+                </div>
+                
+                <div class="subject-progress">
+                    <div class="progress-info">
+                        <span class="progress-text">Your progress</span>
+                        <span class="progress-percentage">28%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 28%"></div>
+                    </div>
+                </div>
+                
+                <div class="subject-actions">
+                    <a href="#" class="btn btn-primary">
+                        <i class="fas fa-play"></i>
+                        Continue
+                    </a>
+                </div>
+            </div>
+
+            <!-- Science -->
+            <div class="subject-card science">
+                <div class="subject-icon">
+                    <i class="fas fa-flask"></i>
+                </div>
+                <h2 class="subject-name">Science</h2>
+                <p class="subject-description">Explore physics, chemistry, biology and environmental science through experiments and interactive simulations.</p>
+                
+                <div class="subject-stats">
+                    <div class="stat">
+                        <span class="stat-value">22</span>
+                        <span class="stat-label">Lessons</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">134</span>
+                        <span class="stat-label">Exercises</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">7</span>
+                        <span class="stat-label">Quizzes</span>
+                    </div>
+                </div>
+                
+                <div class="subject-progress">
+                    <div class="progress-info">
+                        <span class="progress-text">Your progress</span>
+                        <span class="progress-percentage">55%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 55%"></div>
+                    </div>
+                </div>
+                
+                <div class="subject-actions">
+                    <a href="#" class="btn btn-primary">
+                        <i class="fas fa-play"></i>
+                        Continue
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Resources -->
+        <section class="featured-section">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i>
+                Featured Resources
+            </h2>
+            <div class="featured-grid">
+                <div class="featured-card">
+                    <div class="featured-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="featured-name">AI Chatbot</h3>
+                    <p class="featured-description">Get instant help with any subject from our AI assistant</p>
+                    <div class="featured-actions">
+                        <a href="Chatbot.html" class="featured-btn">
+                            <i class="fas fa-comment"></i>
+                            Ask Now
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="featured-card">
+                    <div class="featured-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="featured-name">Learning Games</h3>
+                    <p class="featured-description">Reinforce concepts through fun educational games</p>
+                    <div class="featured-actions">
+                        <a href="Games.html" class="featured-btn">
+                            <i class="fas fa-play"></i>
+                            Play Games
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Include Footer -->
+    <div id="footer-container"></div>
+
+    <script>
+        // Load navbar and footer
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load navbar
+            fetch('Navbar.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Navbar not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                    // Update active state for Subjects
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    navLinks.forEach(link => {
+                        if (link.textContent.includes('Subjects')) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading navbar:', error);
+                    document.getElementById('navbar-container').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Navbar failed to load</div>';
+                });
+
+            // Load footer
+            fetch('Footer.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Footer not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer-container').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Footer failed to load</div>';
+                });
+        });
+
+        // Add animation to progress bars on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0%';
+                
+                setTimeout(() => {
+                    bar.style.transition = 'width 1s ease-in-out';
+                    bar.style.width = width;
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>

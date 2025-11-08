@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sequence Game - Water Cycle | BenchMate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: #2d2e3a;
+            min-height: 100vh;
+            color: white;
+        }
+
+        /* Main Game Container */
+        .main-game {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Game Info */
+        .game-info {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .current-chapter {
+            color: #4a6cf7;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .game-instruction {
+            color: #000000;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        /* Main Box */
+        .main-box {
+            background: #3a3b4a;
+            border-radius: 12px;
+            border: 3px solid #4a6cf7;
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+            box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-title {
+            color: #4a6cf7;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .challenge-badge {
+            background: #4a6cf7;
+            border-radius: 25px;
+            padding: 8px 20px;
+            display: inline-block;
+            margin: 0 auto 20px;
+        }
+
+        .challenge-text {
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .game-description {
+            color: #e0e0e0;
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Game Layout */
+        .game-layout {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .tiles-column {
+            flex: 1;
+        }
+
+        .sequence-column {
+            flex: 1;
+        }
+
+        .column-title {
+            color: #4a6cf7;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Tiles Container */
+        .tiles-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .tile {
+            background: #2d2e3a;
+            border-radius: 8px;
+            border: 2px solid #555;
+            padding: 20px;
+            cursor: grab;
+            transition: all 0.3s;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+        }
+
+        .tile:hover {
+            border-color: #4a6cf7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 108, 247, 0.2);
+        }
+
+        .tile.dragging {
+            opacity: 0.5;
+        }
+
+        .tile-content {
+            color: #ffffff;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* Sequence Container */
+        .sequence-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .sequence-slot {
+            background: rgba(45, 46, 58, 0.5);
+            border-radius: 8px;
+            border: 2px dashed #555;
+            padding: 20px;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .sequence-slot.hover {
+            border-color: #4a6cf7;
+            background: rgba(74, 108, 247, 0.1);
+        }
+
+        .sequence-slot.filled {
+            border-style: solid;
+            border-color: #4a6cf7;
+            background: #2d2e3a;
+        }
+
+        .placeholder-text {
+            color: #888;
+            font-size: 14px;
+        }
+
+        /* Submit Button */
+        .submit-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .submit-btn {
+            background: #4a6cf7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 30px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #3a5cd8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background: #444444;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Explanation Box */
+        .explanation-box {
+            background: #3a3b4a;
+            border-radius: 12px;
+            border: 3px solid #4a6cf7;
+            padding: 25px;
+            margin-top: 30px;
+            box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .explanation-header {
+            color: #4a6cf7;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .explanation-subheader {
+            color: #e0e0e0;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .explanation-input {
+            width: 100%;
+            background: #2d2e3a;
+            border-radius: 8px;
+            border: 2px solid #555;
+            padding: 15px;
+            font-size: 14px;
+            color: #ffffff;
+            min-height: 120px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+
+        .explanation-input:focus {
+            border-color: #4a6cf7;
+            outline: none;
+        }
+
+        .explanation-input::placeholder {
+            color: #888;
+        }
+
+        /* Game Feedback */
+        .feedback {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: 500;
+        }
+
+        .feedback.correct {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+
+        .feedback.incorrect {
+            background: rgba(244, 67, 54, 0.2);
+            color: #F44336;
+            border: 2px solid #F44336;
+        }
+
+        /* Remove Button */
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .remove-btn:hover {
+            background: #ff2222;
+            transform: scale(1.1);
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .progress-text {
+            color: #4a6cf7;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .game-layout {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .main-box {
+                padding: 20px;
+            }
+            
+            .game-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Include Navbar -->
+    <header id="navbar-container"></header>
+
+    <!-- Main Game -->
+    <div class="main-game">
+        <!-- Game Info -->
+        <div class="game-info">
+            <div class="current-chapter">Earth & Water - Water Cycle</div>
+            <div class="game-instruction">Arrange the steps in order to complete the level and earn XP</div>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="progress-indicator">
+            <div class="progress-text">Sequence Challenge</div>
+        </div>
+
+        <!-- Main Box -->
+        <div class="main-box">
+            <div class="challenge-badge">
+                <span class="challenge-text">ORDER CHALLENGE</span>
+            </div>
+            <h1 class="game-title">Assemble the Water Cycle</h1>
+            <p class="game-description">
+                Drag the tiles on the left into the correct sequence on the right. Think like a scientist. 
+                Explain your choice after ordering to earn bonus XP.
+            </p>
+
+            <!-- Game Layout -->
+            <div class="game-layout">
+                <!-- Tiles Column -->
+                <div class="tiles-column">
+                    <h2 class="column-title">Available Steps</h2>
+                    <div class="tiles-container" id="tilesContainer">
+                        <div class="tile" draggable="true" data-step="1">
+                            <div class="tile-content">
+                                Evaporation — water turns into vapor from oceans, lakes and soil.
+                            </div>
+                        </div>
+                        <div class="tile" draggable="true" data-step="2">
+                            <div class="tile-content">
+                                Condensation — water vapor cools and forms clouds.
+                            </div>
+                        </div>
+                        <div class="tile" draggable="true" data-step="3">
+                            <div class="tile-content">
+                                Precipitation — water falls back to Earth as rain, snow, sleet, or hail.
+                            </div>
+                        </div>
+                        <div class="tile" draggable="true" data-step="4">
+                            <div class="tile-content">
+                                Collection — water collects in bodies like rivers, lakes and oceans.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sequence Column -->
+                <div class="sequence-column">
+                    <h2 class="column-title">Your Sequence</h2>
+                    <div class="sequence-container" id="sequenceContainer">
+                        <div class="sequence-slot" data-slot="1">
+                            <span class="placeholder-text">Drop here to start the sequence</span>
+                        </div>
+                        <div class="sequence-slot" data-slot="2">
+                            <span class="placeholder-text">Continue the sequence</span>
+                        </div>
+                        <div class="sequence-slot" data-slot="3">
+                            <span class="placeholder-text">Continue the sequence</span>
+                        </div>
+                        <div class="sequence-slot" data-slot="4">
+                            <span class="placeholder-text">Complete the sequence</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="submit-section">
+                <button class="submit-btn" id="submitBtn" disabled>Submit Answer</button>
+                <div id="feedback" class="feedback" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Explanation Box -->
+        <div class="explanation-box">
+            <h3 class="explanation-header">Explain your answer for additional points! (Optional-20+XP)</h3>
+            <p class="explanation-subheader">Why did you put them in this order?</p>
+            <textarea 
+                class="explanation-input" 
+                placeholder="Explain your reasoning here..."
+                id="explanationInput"
+            ></textarea>
+        </div>
+    </div>
+
+    <script>
+        // Load external navbar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load navbar
+            fetch('Navbar.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Navbar not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                    
+                    // Set active state for Games link
+                    setTimeout(() => {
+                        const gamesLink = document.querySelector('a[href="Games.html"]');
+                        const currentLinks = document.querySelectorAll('.nav-link.active');
+                        
+                        // Remove active class from all links first
+                        currentLinks.forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        
+                        // Add active class to Games link
+                        if (gamesLink) {
+                            gamesLink.classList.add('active');
+                        }
+                    }, 100);
+                })
+                .catch(error => {
+                    console.error('Error loading navbar:', error);
+                    document.getElementById('navbar-container').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Navbar failed to load</div>';
+                });
+
+            // Initialize game functionality
+            initializeGame();
+        });
+
+        // Game variables
+        let draggedTile = null;
+        const correctSequence = ['1', '2', '3', '4']; // Correct order of steps
+        let userSequence = ['', '', '', '']; // Track user's sequence
+
+        function initializeGame() {
+            const tiles = document.querySelectorAll('.tile');
+            const slots = document.querySelectorAll('.sequence-slot');
+            const submitBtn = document.getElementById('submitBtn');
+            const feedback = document.getElementById('feedback');
+
+            // Add drag events to tiles
+            tiles.forEach(tile => {
+                tile.addEventListener('dragstart', handleDragStart);
+                tile.addEventListener('dragend', handleDragEnd);
+            });
+
+            // Add drop events to slots
+            slots.forEach(slot => {
+                slot.addEventListener('dragover', handleDragOver);
+                slot.addEventListener('dragenter', handleDragEnter);
+                slot.addEventListener('dragleave', handleDragLeave);
+                slot.addEventListener('drop', handleDrop);
+            });
+
+            // Submit button event
+            submitBtn.addEventListener('click', checkAnswer);
+
+            // Drag and Drop Functions
+            function handleDragStart(e) {
+                draggedTile = this;
+                this.classList.add('dragging');
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', this.innerHTML);
+            }
+
+            function handleDragEnd() {
+                this.classList.remove('dragging');
+                draggedTile = null;
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+                return false;
+            }
+
+            function handleDragEnter(e) {
+                e.preventDefault();
+                this.classList.add('hover');
+            }
+
+            function handleDragLeave() {
+                this.classList.remove('hover');
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                this.classList.remove('hover');
+
+                if (draggedTile && !this.querySelector('.tile')) {
+                    // Get the step number from the dragged tile
+                    const step = draggedTile.getAttribute('data-step');
+                    const slotIndex = parseInt(this.getAttribute('data-slot')) - 1;
+                    
+                    // Update user sequence
+                    userSequence[slotIndex] = step;
+                    
+                    // Create a new tile for the slot
+                    const newTile = draggedTile.cloneNode(true);
+                    newTile.classList.remove('dragging');
+                    newTile.setAttribute('draggable', 'false');
+                    
+                    // Add remove functionality
+                    const removeBtn = document.createElement('button');
+                    removeBtn.innerHTML = '×';
+                    removeBtn.className = 'remove-btn';
+                    removeBtn.addEventListener('click', function() {
+                        this.parentElement.remove();
+                        userSequence[slotIndex] = '';
+                        updateSubmitButton();
+                        
+                        // Reset the slot placeholder
+                        const slot = document.querySelector(`.sequence-slot[data-slot="${slotIndex + 1}"]`);
+                        slot.innerHTML = '<span class="placeholder-text">' + 
+                            (slotIndex === 0 ? 'Drop here to start the sequence' : 
+                             slotIndex === 3 ? 'Complete the sequence' : 
+                             'Continue the sequence') + '</span>';
+                        slot.classList.remove('filled');
+                    });
+                    
+                    newTile.style.position = 'relative';
+                    newTile.appendChild(removeBtn);
+                    
+                    // Clear the slot and add the new tile
+                    this.innerHTML = '';
+                    this.appendChild(newTile);
+                    this.classList.add('filled');
+                    
+                    // Remove the original tile from tiles container
+                    draggedTile.remove();
+                    
+                    updateSubmitButton();
+                }
+            }
+
+            function updateSubmitButton() {
+                const isComplete = userSequence.every(step => step !== '');
+                submitBtn.disabled = !isComplete;
+            }
+
+            function checkAnswer() {
+                const isCorrect = JSON.stringify(userSequence) === JSON.stringify(correctSequence);
+                
+                if (isCorrect) {
+                    feedback.textContent = '✅ Correct! The water cycle sequence is perfect! +50 XP';
+                    feedback.className = 'feedback correct';
+                } else {
+                    feedback.textContent = '❌ Not quite right. Try again!';
+                    feedback.className = 'feedback incorrect';
+                    
+                    // Show correct answer after a delay
+                    setTimeout(() => {
+                        feedback.textContent += ' Correct order: Evaporation → Condensation → Precipitation → Collection';
+                    }, 2000);
+                }
+                
+                feedback.style.display = 'block';
+                
+                // Check if explanation was provided for bonus XP
+                const explanation = document.getElementById('explanationInput').value.trim();
+                if (explanation && isCorrect) {
+                    setTimeout(() => {
+                        feedback.textContent += ' +20 Bonus XP for your explanation!';
+                    }, 1000);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

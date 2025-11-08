@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra: Quadratic Equations - BenchMate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Color Variables */
+        :root {
+            --blue: linear-gradient(88.45deg, rgba(74, 108, 247, 1) 0%, rgba(58, 92, 216, 1) 100%);
+            --primary-blue: #4a6cf7;
+            --primary-blue-light: rgba(74, 108, 247, 0.1);
+            --primary-blue-dark: #3a5cd8;
+            --text-dark: #222222;
+            --text-gray: #333333;
+            --text-medium: #555555;
+            --text-light: #666666;
+            --background-white: #ffffff;
+            --background-light: #f8f9fa;
+            --shadow-light: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0px 10px 30px 0px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0px 15px 40px 0px rgba(74, 108, 247, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main Content Styles */
+        .main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            flex: 1;
+        }
+
+        .subject-header {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .subject-info {
+            flex: 1;
+        }
+
+        .subject-title {
+            color: #222222;
+            font-size: 31px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subject-description {
+            color: #666666;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            max-width: 500px;
+            margin-bottom: 10px;
+        }
+
+        .progress-text {
+            color: #666666;
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            background: #eef4ff;
+            border-radius: 4px;
+            height: 8px;
+            max-width: 500px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #4a6cf7;
+            border-radius: 4px;
+            height: 100%;
+            width: 65%;
+        }
+
+        .subject-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #4a6cf7;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #3a5cd8;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #4a6cf7;
+            border: 2px solid #4a6cf7;
+        }
+
+        .btn-outline:hover {
+            background: #f0f5ff;
+        }
+
+        /* Content Layout */
+        .content-layout {
+            display: flex;
+            gap: 30px;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 300px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-title {
+            color: #222222;
+            font-size: 18px;
+            font-weight: 700;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eeeeee;
+            margin-bottom: 20px;
+        }
+
+        .course-modules {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .module {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .module-header {
+            background: #ffffff;
+            border-left: 4px solid #eef4ff;
+            padding: 15px 19px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .module-header.active {
+            background: #f0f5ff;
+            border-left-color: #4a6cf7;
+        }
+
+        .module-header:hover {
+            background: #f8f9fa;
+        }
+
+        .module-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .module-icon {
+            color: #4a6cf7;
+            font-size: 16px;
+        }
+
+        .module-name {
+            color: #333333;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .module-arrow {
+            color: #333333;
+            font-size: 16px;
+            transition: transform 0.3s;
+        }
+
+        .module.active .module-arrow {
+            transform: rotate(180deg);
+        }
+
+        .module-content {
+            background: #f8f9fa;
+            padding: 10px 15px 10px 45px;
+            display: none;
+        }
+
+        .module.active .module-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .module-item {
+            border-radius: 6px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .module-item:hover {
+            background: #eef4ff;
+        }
+
+        .module-item.active {
+            background: #e6f0ff;
+        }
+
+        .module-item-icon {
+            color: #666666;
+            font-size: 16px;
+            width: 20px;
+        }
+
+        .module-item-name {
+            color: #666666;
+            font-size: 15px;
+        }
+
+        .module-item.active .module-item-name {
+            color: #4a6cf7;
+            font-weight: 500;
+        }
+
+        /* Main Content Area */
+        .content-area {
+            flex: 1;
+        }
+
+        .content-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .content-header {
+            padding: 20px;
+            border-bottom: 1px solid #eeeeee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-title {
+            color: #222222;
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .icon-btn {
+            background: #f8f9fa;
+            border-radius: 6px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .icon-btn:hover {
+            background: #eef4ff;
+        }
+
+        .icon-btn i {
+            color: #666666;
+            font-size: 13px;
+        }
+
+        .content-body {
+            padding: 20px;
+        }
+
+        .content-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #eeeeee;
+            margin-bottom: 20px;
+        }
+
+        .page-nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .page-info {
+            color: #333333;
+            font-size: 15px;
+        }
+
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .zoom-info {
+            color: #333333;
+            font-size: 16px;
+        }
+
+        .content-display {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 30px 35px 50px;
+            min-height: 500px;
+        }
+
+        .lesson-title {
+            color: #222222;
+            font-size: 23px;
+            font-weight: 700;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eeeeee;
+            margin-bottom: 30px;
+        }
+
+        .lesson-content {
+            max-width: 800px;
+        }
+
+        .lesson-text {
+            color: #333333;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .formula-box {
+            background: #eef4ff;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .formula {
+            color: #333333;
+            font-size: 18px;
+            font-style: italic;
+            line-height: 1.7;
+        }
+
+        .lesson-subtitle {
+            color: #333333;
+            font-size: 17px;
+            font-weight: 700;
+            margin: 25px 0 15px;
+        }
+
+        .lesson-list {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .lesson-list-item {
+            color: #333333;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .lesson-list-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #4a6cf7;
+        }
+
+        .numbered-list {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .numbered-list-item {
+            color: #333333;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+            counter-increment: list-counter;
+        }
+
+        .numbered-list-item::before {
+            content: counter(list-counter) ".";
+            position: absolute;
+            left: 0;
+            color: #4a6cf7;
+            font-weight: bold;
+        }
+
+        /* Related Materials */
+        .related-materials {
+            margin-top: 30px;
+        }
+
+        .related-title {
+            color: #222222;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .material-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .material-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .material-icon {
+            background: #e6f0ff;
+            border-radius: 30px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .material-name {
+            color: #222222;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .material-description {
+            color: #666666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .material-link {
+            display: inline-block;
+            color: #4a6cf7;
+            font-weight: 500;
+            font-size: 15px;
+            text-decoration: none;
+            border: 2px solid #4a6cf7;
+            border-radius: 6px;
+            padding: 10px 20px;
+            transition: all 0.3s;
+            width: fit-content;
+        }
+
+        .material-link:hover {
+            background: #f0f5ff;
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+            padding: 80px 5% 40px;
+            width: 100%;
+            color: var(--background-white);
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 40px;
+        }
+
+        .footer-main {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+        }
+
+        .footer-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+            gap: 30px;
+        }
+
+        .footer-logo {
+            margin-bottom: 10px;
+        }
+
+        .footer-logo-img {
+            border-radius: 9px;
+            width: 150px;
+            height: auto;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .footer-logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        .contact-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .contact-title {
+            color: var(--background-white);
+            font-family: "Inter-SemiBold", sans-serif;
+            font-size: 32px;
+            line-height: 1.2;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .contact-email,
+        .contact-phone {
+            color: var(--background-white);
+            font-family: "Inter-SemiBold", sans-serif;
+            font-size: 18px;
+            line-height: 1.5;
+            font-weight: 600;
+            opacity: 0.9;
+            transition: var(--transition);
+        }
+
+        .contact-email:hover,
+        .contact-phone:hover {
+            opacity: 1;
+            transform: translateX(-5px);
+        }
+
+        .footer-bottom {
+            width: 100%;
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .copyright {
+            color: var(--background-white);
+            font-family: "Inter-Regular", sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .content-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .materials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .subject-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .subject-actions {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .materials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                align-items: center;
+            }
+
+            .footer-right {
+                align-items: center;
+                text-align: center;
+            }
+
+            .contact-section {
+                align-items: center;
+            }
+
+            .contact-email:hover,
+            .contact-phone:hover {
+                transform: translateY(-2px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .material-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Include Navigation Bar -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Subject Header -->
+        <section class="subject-header">
+            <div class="subject-info">
+                <h1 class="subject-title">Algebra: Quadratic Equations</h1>
+                <p class="subject-description">Master the techniques to solve quadratic equations through various methods</p>
+                <div class="progress-info">
+                    <span class="progress-text">Your progress: 65% complete</span>
+                    <span class="progress-text">12/18 topics mastered</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            <div class="subject-actions">
+                <button class="btn btn-primary">
+                    <i class="fas fa-download"></i>
+                    Download All
+                </button>
+                <button class="btn btn-outline">
+                    <i class="fas fa-share"></i>
+                    Share
+                </button>
+            </div>
+        </section>
+
+        <!-- Content Layout -->
+        <div class="content-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <h2 class="sidebar-title">Course Materials</h2>
+                <div class="course-modules">
+                    <!-- Module 1 -->
+                    <div class="module active">
+                        <div class="module-header active">
+                            <div class="module-title">
+                                <i class="fas fa-th-large module-icon"></i>
+                                <span class="module-name">Introduction to Quadratic Equations</span>
+                            </div>
+                            <i class="fas fa-chevron-down module-arrow"></i>
+                        </div>
+                        <div class="module-content">
+                            <div class="module-item active">
+                                <i class="far fa-file module-item-icon"></i>
+                                <span class="module-item-name">What are Quadratic Equations?</span>
+                            </div>
+                            <div class="module-item">
+                                <i class="fas fa-equals module-item-icon"></i>
+                                <span class="module-item-name">Video Lecture: Basics</span>
+                            </div>
+                            <div class="module-item">
+                                <i class="far fa-clipboard module-item-icon"></i>
+                                <span class="module-item-name">Practice Worksheet</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Module 2 -->
+                    <div class="module">
+                        <div class="module-header">
+                            <div class="module-title">
+                                <i class="fas fa-th-large module-icon"></i>
+                                <span class="module-name">Solving by Factoring</span>
+                            </div>
+                            <i class="fas fa-chevron-down module-arrow"></i>
+                        </div>
+                    </div>
+
+                    <!-- Module 3 -->
+                    <div class="module">
+                        <div class="module-header">
+                            <div class="module-title">
+                                <i class="fas fa-th-large module-icon"></i>
+                                <span class="module-name">Quadratic Formula</span>
+                            </div>
+                            <i class="fas fa-chevron-down module-arrow"></i>
+                        </div>
+                    </div>
+
+                    <!-- Module 4 -->
+                    <div class="module">
+                        <div class="module-header">
+                            <div class="module-title">
+                                <i class="fas fa-th-large module-icon"></i>
+                                <span class="module-name">Applications</span>
+                            </div>
+                            <i class="fas fa-chevron-down module-arrow"></i>
+                        </div>
+                    </div>
+
+                    <!-- Module 5 -->
+                    <div class="module">
+                        <div class="module-header">
+                            <div class="module-title">
+                                <i class="fas fa-th-large module-icon"></i>
+                                <span class="module-name">Practice Tests</span>
+                            </div>
+                            <i class="fas fa-chevron-down module-arrow"></i>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div class="content-area">
+                <!-- Lesson Content -->
+                <div class="content-card">
+                    <div class="content-header">
+                        <h2 class="content-title">What are Quadratic Equations?</h2>
+                        <div class="content-actions">
+                            <div class="icon-btn">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div class="icon-btn">
+                                <i class="fas fa-print"></i>
+                            </div>
+                            <div class="icon-btn">
+                                <i class="fas fa-expand"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-body">
+                        <div class="content-nav">
+                            <div class="page-nav">
+                                <div class="icon-btn">
+                                    <i class="fas fa-chevron-left"></i>
+                                </div>
+                                <span class="page-info">Page 1 of 24</span>
+                                <div class="icon-btn">
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
+                            </div>
+                            <div class="zoom-controls">
+                                <div class="icon-btn">
+                                    <i class="fas fa-search-minus"></i>
+                                </div>
+                                <span class="zoom-info">100%</span>
+                                <div class="icon-btn">
+                                    <i class="fas fa-search-plus"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content-display">
+                            <div class="lesson-content">
+                                <h3 class="lesson-title">Introduction to Quadratic Equations</h3>
+                                <p class="lesson-text">
+                                    A quadratic equation is a polynomial equation of the second degree. The general form is:
+                                </p>
+                                <div class="formula-box">
+                                    <p class="formula">ax² + bx + c = 0</p>
+                                </div>
+                                <p class="lesson-text">
+                                    where <i>a</i>, <i>b</i>, and <i>c</i> are constants, and <i>a ≠ 0</i>.
+                                </p>
+                                
+                                <h4 class="lesson-subtitle">Examples of Quadratic Equations:</h4>
+                                <ul class="lesson-list">
+                                    <li class="lesson-list-item">x² - 5x + 6 = 0</li>
+                                    <li class="lesson-list-item">2x² + 3x - 2 = 0</li>
+                                    <li class="lesson-list-item">4x² - 9 = 0</li>
+                                </ul>
+                                
+                                <h4 class="lesson-subtitle">Key Characteristics:</h4>
+                                <ol class="numbered-list">
+                                    <li class="numbered-list-item">The graph of a quadratic equation is a parabola</li>
+                                    <li class="numbered-list-item">It has a U-shape when a > 0 (opens upward)</li>
+                                    <li class="numbered-list-item">It has an inverted U-shape when a < 0 (opens downward)</li>
+                                    <li class="numbered-list-item">It has at most two real solutions (roots)</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Materials -->
+                <section class="related-materials">
+                    <h2 class="related-title">Related Materials</h2>
+                    <div class="materials-grid">
+                        <!-- Material 1 - Chatbot -->
+                        <div class="material-card">
+                            <div class="material-icon">
+                                🤖
+                            </div>
+                            <h3 class="material-name">Ask Chatbot</h3>
+                            <p class="material-description">
+                                Ask our AI assistance chat bot to help you with queries
+                            </p>
+                            <a href="#" class="material-link">Ask Now</a>
+                        </div>
+
+                        <!-- Material 2 -->
+                        <div class="material-card">
+                            <div class="material-icon">
+                                <i class="fas fa-share"></i>
+                            </div>
+                            <h3 class="material-name">Practice Exercises</h3>
+                            <p class="material-description">
+                                20 problems with step-by-step solutions
+                            </p>
+                            <a href="#" class="material-link">Start Practice</a>
+                        </div>
+
+                        <!-- Material 3 -->
+                        <div class="material-card">
+                            <div class="material-icon">
+                                <i class="fas fa-gamepad"></i>
+                            </div>
+                            <h3 class="material-name">Interactive Quiz</h3>
+                            <p class="material-description">
+                                Test your knowledge with our interactive game
+                            </p>
+                            <a href="#" class="material-link">Play Now</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Include Footer -->
+    <div id="footer-container"></div>
+
+    <script>
+        // Load navbar and footer
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load navbar
+            fetch('Navbar.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Navbar not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                    // Update active state for Subjects
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    navLinks.forEach(link => {
+                        if (link.textContent.includes('Subjects')) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading navbar:', error);
+                    document.getElementById('navbar-container').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Navbar failed to load</div>';
+                });
+
+            // Load footer
+            fetch('Footer.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Footer not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer-container').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Footer failed to load</div>';
+                });
+        });
+
+        // Module toggle functionality
+        document.querySelectorAll('.module-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const module = header.parentElement;
+                module.classList.toggle('active');
+                
+                // Close other modules when opening one
+                if (module.classList.contains('active')) {
+                    document.querySelectorAll('.module').forEach(otherModule => {
+                        if (otherModule !== module) {
+                            otherModule.classList.remove('active');
+                        }
+                    });
+                }
+            });
+        });
+
+        // Module item selection
+        document.querySelectorAll('.module-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.module-item').forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                });
+                item.classList.add('active');
+            });
+        });
+
+        // Page navigation
+        document.querySelectorAll('.page-nav .icon-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const pageInfo = document.querySelector('.page-info');
+                let currentPage = parseInt(pageInfo.textContent.split(' ')[1]);
+                const totalPages = 24;
+                
+                if (btn.querySelector('.fa-chevron-left')) {
+                    currentPage = Math.max(1, currentPage - 1);
+                } else if (btn.querySelector('.fa-chevron-right')) {
+                    currentPage = Math.min(totalPages, currentPage + 1);
+                }
+                
+                pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+            });
+        });
+
+        // Zoom controls
+        document.querySelectorAll('.zoom-controls .icon-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const zoomInfo = document.querySelector('.zoom-info');
+                let currentZoom = parseInt(zoomInfo.textContent);
+                
+                if (btn.querySelector('.fa-search-minus')) {
+                    currentZoom = Math.max(50, currentZoom - 10);
+                } else if (btn.querySelector('.fa-search-plus')) {
+                    currentZoom = Math.min(200, currentZoom + 10);
+                }
+                
+                zoomInfo.textContent = `${currentZoom}%`;
+            });
+        });
+    </script>
+</body>
+</html>

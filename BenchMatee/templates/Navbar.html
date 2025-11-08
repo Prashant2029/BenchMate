@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BenchMate - Navigation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px;
+            height: 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo-link {
+            display: block;
+            cursor: pointer;
+        }
+
+        .logo {
+            height: 50px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-links {
+            display: flex;
+            position: relative;
+            background-color: #f0f2f5;
+            border-radius: 30px;
+            padding: 6px;
+        }
+
+        .nav-link {
+            padding: 10px 22px;
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            border-radius: 25px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #4a6cf7;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        .nav-link.active {
+            color: #fff;
+            background-color: #4a6cf7;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .welcome-user {
+            font-weight: 500;
+            color: #555;
+            font-size: 15px;
+        }
+
+        .profile-link {
+            display: block;
+            cursor: pointer;
+        }
+
+        .profile-icon {
+            height: 36px;
+            width: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #e0e0e0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="nav">
+            <a href="Landing.html" class="logo-link">
+                <img class="logo" src="images\logo0.jpg" alt="BenchMate Logo" />
+            </a>
+            
+            <div class="nav-center">
+                <div class="nav-links">
+                    <a href="Dashboard.html" class="nav-link active">Dashboard</a>
+                    <a href="Subjects.html" class="nav-link">Subjects</a>
+                    <a href="Chatbot.html" class="nav-link">Chatbot</a>
+                    <a href="Games.html" class="nav-link">Games</a>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <a href="MyProfile.html" class="profile-link">
+                    <img class="profile-icon" src="images\profile.jpg" alt="Profile" />
+                </a>
+            </div>
+        </div>
+    </header>
+</body>
+</html>

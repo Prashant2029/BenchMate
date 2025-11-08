@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BenchMate - AI-Powered Study Assistant</title>
+    <style>
+        /* Global CSS Reset and Base Styles */
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        /* Color Variables */
+        :root {
+          --primary-blue: #4a6cf7;
+          --primary-blue-light: rgba(74, 108, 247, 0.1);
+          --primary-blue-dark: #3a5cd8;
+          --text-dark: #222222;
+          --text-gray: #333333;
+          --text-medium: #555555;
+          --text-light: #666666;
+          --background-white: #ffffff;
+          --background-light: #f8f9fa;
+          --shadow-light: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
+          --shadow-medium: 0px 10px 30px 0px rgba(0, 0, 0, 0.1);
+          --shadow-hover: 0px 15px 40px 0px rgba(74, 108, 247, 0.15);
+          --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          --border-radius: 12px;
+        }
+
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+            color: var(--text-gray);
+        }
+
+        /* Header Styles - Clean Version */
+        .header {
+          background: var(--background-white);
+          padding: 15px 5%;
+          height: 80px;
+          position: fixed;
+          width: 100%;
+          top: 0;
+          left: 0;
+          box-shadow: var(--shadow-light);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          z-index: 1000;
+          transition: var(--transition);
+        }
+
+        .nav {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .logo-link {
+            display: block;
+            cursor: pointer;
+        }
+
+        .logo {
+            height: 50px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .header-right {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+        }
+
+        .login-or-signup {
+          color: var(--text-dark);
+          font-family: "Inter-Medium", sans-serif;
+          font-size: 16px;
+          font-weight: 500;
+          padding: 10px 20px;
+          border: 2px solid var(--primary-blue);
+          border-radius: 6px;
+          transition: var(--transition);
+          cursor: pointer;
+          white-space: nowrap;
+          text-decoration: none;
+          display: block;
+        }
+
+        .login-or-signup:hover {
+          background: var(--primary-blue);
+          color: var(--background-white);
+          transform: translateY(-2px);
+        }
+
+        .profile-icon {
+          width: 45px;
+          height: 45px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid var(--primary-blue-light);
+          transition: var(--transition);
+          cursor: pointer;
+        }
+
+        .profile-icon:hover {
+          transform: scale(1.1);
+          border-color: var(--primary-blue);
+          box-shadow: var(--shadow-hover);
+        }
+
+        /* Hero Section */
+        .hero-section {
+          padding: 140px 5% 80px;
+          width: 100%;
+          max-width: 1200px;
+          margin: 0 auto;
+          text-align: center;
+        }
+
+        .hero-title {
+          color: var(--text-dark);
+          font-family: "Inter-Bold", sans-serif;
+          font-size: clamp(2.5rem, 5vw, 4rem);
+          line-height: 1.2;
+          font-weight: 700;
+          margin-bottom: 20px;
+          background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .hero-subtitle {
+          color: var(--text-medium);
+          font-family: "Inter-Regular", sans-serif;
+          font-size: clamp(1rem, 2vw, 1.25rem);
+          line-height: 1.6;
+          font-weight: 400;
+          max-width: 800px;
+          margin: 0 auto 40px;
+        }
+
+        .hero-buttons {
+          display: flex;
+          gap: 20px;
+          align-items: center;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+
+        .btn-primary {
+          background: var(--primary-blue);
+          border-radius: 8px;
+          padding: 16px 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          cursor: pointer;
+          transition: var(--transition);
+          border: none;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .btn-primary::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+          transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+          left: 100%;
+        }
+
+        .btn-primary:hover {
+          background: var(--primary-blue-dark);
+          transform: translateY(-3px);
+          box-shadow: var(--shadow-hover);
+        }
+
+        .btn-outline {
+          border-radius: 8px;
+          border: 2px solid var(--primary-blue);
+          padding: 16px 32px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          cursor: pointer;
+          transition: var(--transition);
+          background: transparent;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .btn-outline::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 0;
+          height: 100%;
+          background: var(--primary-blue);
+          transition: width 0.3s ease;
+          z-index: 0;
+        }
+
+        .btn-outline:hover::before {
+          width: 100%;
+        }
+
+        .btn-outline:hover {
+          transform: translateY(-3px);
+          box-shadow: var(--shadow-hover);
+        }
+
+        .btn-text {
+          color: var(--background-white);
+          font-family: "Inter-Medium", sans-serif;
+          font-size: 16px;
+          line-height: 1.5;
+          font-weight: 500;
+          position: relative;
+          z-index: 1;
+        }
+
+        .btn-outline .btn-text {
+          color: var(--primary-blue);
+          transition: color 0.3s ease;
+        }
+
+        .btn-outline:hover .btn-text {
+          color: var(--background-white);
+        }
+
+        /* Features Section with Numbers */
+        .features-section {
+          background: var(--background-white);
+          padding: 100px 5%;
+          width: 100%;
+        }
+
+        .section-container {
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .section-header {
+          text-align: center;
+          margin-bottom: 60px;
+        }
+
+        .section-title {
+          color: var(--text-dark);
+          font-family: "Inter-Bold", sans-serif;
+          font-size: clamp(2rem, 4vw, 3rem);
+          line-height: 1.2;
+          font-weight: 700;
+          margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+          color: var(--text-light);
+          font-family: "Inter-Regular", sans-serif;
+          font-size: 18px;
+          line-height: 1.6;
+          font-weight: 400;
+          max-width: 600px;
+          margin: 0 auto;
+        }
+
+        .features-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          gap: 40px;
+        }
+
+        .feature-card {
+          background: var(--background-white);
+          border-radius: var(--border-radius);
+          padding: 70px 30px 40px;
+          position: relative;
+          box-shadow: var(--shadow-light);
+          transition: var(--transition);
+          border: 2px solid transparent;
+          text-align: center;
+        }
+
+        .feature-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 4px;
+          background: linear-gradient(90deg, var(--primary-blue), var(--primary-blue-dark));
+          transform: scaleX(0);
+          transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+          transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+          transform: translateY(-8px);
+          box-shadow: var(--shadow-hover);
+          border-color: var(--primary-blue-light);
+        }
+
+        .feature-number {
+          position: absolute;
+          top: -25px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 60px;
+          height: 60px;
+          background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-family: "Inter-Bold", sans-serif;
+          font-size: 24px;
+          font-weight: 700;
+          box-shadow: var(--shadow-medium);
+          transition: var(--transition);
+          z-index: 2;
+        }
+
+        .feature-card:hover .feature-number {
+          transform: translateX(-50%) scale(1.1) rotate(10deg);
+        }
+
+        .feature-icon {
+          background: linear-gradient(135deg, var(--primary-blue-light), rgba(74, 108, 247, 0.2));
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 80px;
+          height: 80px;
+          margin: 0 auto 25px;
+          transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+          transform: scale(1.1);
+        }
+
+        .feature-symbol {
+          color: var(--primary-blue);
+          font-size: 32px;
+          line-height: 1;
+          transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-symbol {
+          transform: scale(1.2);
+        }
+
+        .feature-title {
+          color: var(--text-dark);
+          font-family: "Inter-Bold", sans-serif;
+          font-size: 24px;
+          line-height: 1.3;
+          font-weight: 700;
+          margin-bottom: 20px;
+        }
+
+        .feature-description {
+          color: var(--text-light);
+          font-family: "Inter-Regular", sans-serif;
+          font-size: 16px;
+          line-height: 1.6;
+          font-weight: 400;
+        }
+
+        /* Gamify Section with Custom Bullets */
+        .gamify-section {
+          padding: 100px 5%;
+          background: linear-gradient(135deg, var(--background-light), var(--primary-blue-light));
+          width: 100%;
+        }
+
+        .gamify-content {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 60px;
+          max-width: 1200px;
+          margin: 0 auto;
+          align-items: center;
+        }
+
+        .gamify-text {
+          text-align: left;
+        }
+
+        .gamify-title {
+          color: var(--text-dark);
+          font-family: "Inter-Bold", sans-serif;
+          font-size: clamp(2rem, 4vw, 2.5rem);
+          line-height: 1.2;
+          font-weight: 700;
+          margin-bottom: 20px;
+          background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .gamify-subtitle {
+          color: var(--text-light);
+          font-family: "Inter-Regular", sans-serif;
+          font-size: 18px;
+          line-height: 1.6;
+          font-weight: 400;
+          margin-bottom: 30px;
+        }
+
+        .features-list {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          margin-bottom: 40px;
+        }
+
+        .feature-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 15px;
+          padding: 15px;
+          border-radius: var(--border-radius);
+          transition: var(--transition);
+          position: relative;
+        }
+
+        .feature-item::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 6px;
+          height: 6px;
+          background: var(--primary-blue);
+          border-radius: 50%;
+          transition: var(--transition);
+        }
+
+        .feature-item:hover::before {
+          width: 8px;
+          height: 8px;
+          background: var(--primary-blue-dark);
+        }
+
+        .feature-item:hover {
+          background: rgba(255, 255, 255, 0.5);
+          transform: translateX(5px);
+        }
+
+        .feature-icon-small {
+          color: var(--primary-blue);
+          font-size: 20px;
+          margin-top: 2px;
+          transition: var(--transition);
+          min-width: 20px;
+        }
+
+        .feature-item:hover .feature-icon-small {
+          transform: scale(1.2);
+          color: var(--primary-blue-dark);
+        }
+
+        .feature-text {
+          color: var(--text-gray);
+          font-family: "Inter-Regular", sans-serif;
+          font-size: 16px;
+          line-height: 1.5;
+          font-weight: 400;
+        }
+
+        .gamify-visual {
+          border-radius: var(--border-radius);
+          overflow: hidden;
+          box-shadow: var(--shadow-medium);
+          transition: var(--transition);
+        }
+
+        .gamify-visual:hover {
+          transform: translateY(-5px);
+          box-shadow: var(--shadow-hover);
+        }
+
+        .visual-placeholder {
+          width: 100%;
+          height: 400px;
+          background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 18px;
+          font-weight: 600;
+        }
+
+        /* Footer */
+        .footer {
+          background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+          padding: 80px 5% 40px;
+          width: 100%;
+          color: var(--background-white);
+        }
+
+        .footer-content {
+          max-width: 1200px;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 40px;
+        }
+
+        .footer-main {
+          display: flex;
+          justify-content: flex-end;
+          width: 100%;
+        }
+
+        .footer-right {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          text-align: right;
+          gap: 30px;
+        }
+
+        .footer-logo {
+          margin-bottom: 10px;
+        }
+
+        .footer-logo-img {
+          border-radius: 9px;
+          width: 150px;
+          height: auto;
+          object-fit: cover;
+          transition: var(--transition);
+        }
+
+        .footer-logo-img:hover {
+          transform: scale(1.05);
+        }
+
+        .contact-section {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 15px;
+        }
+
+        .contact-title {
+          color: var(--background-white);
+          font-family: "Inter-SemiBold", sans-serif;
+          font-size: 32px;
+          line-height: 1.2;
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+
+        .contact-info {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 8px;
+        }
+
+        .contact-email,
+        .contact-phone {
+          color: var(--background-white);
+          font-family: "Inter-SemiBold", sans-serif;
+          font-size: 18px;
+          line-height: 1.5;
+          font-weight: 600;
+          opacity: 0.9;
+          transition: var(--transition);
+        }
+
+        .contact-email:hover,
+        .contact-phone:hover {
+          opacity: 1;
+          transform: translateX(-5px);
+        }
+
+        .footer-bottom {
+          width: 100%;
+          text-align: center;
+          padding-top: 40px;
+          border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .copyright {
+          color: var(--background-white);
+          font-family: "Inter-Regular", sans-serif;
+          font-size: 14px;
+          line-height: 1.5;
+          font-weight: 400;
+          opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+          .hero-buttons {
+            flex-direction: column;
+          }
+          
+          .features-grid {
+            grid-template-columns: 1fr;
+          }
+          
+          .gamify-content {
+            grid-template-columns: 1fr;
+            gap: 40px;
+          }
+          
+          .gamify-text {
+            text-align: center;
+          }
+          
+          .footer-content {
+            align-items: center;
+          }
+          
+          .footer-right {
+            align-items: center;
+            text-align: center;
+          }
+          
+          .contact-section {
+            align-items: center;
+          }
+          
+          .contact-email:hover,
+          .contact-phone:hover {
+            transform: translateY(-2px);
+          }
+
+          .header-right {
+            gap: 15px;
+          }
+
+          .login-or-signup {
+            padding: 8px 16px;
+            font-size: 14px;
+          }
+
+          .profile-icon {
+            width: 40px;
+            height: 40px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .hero-section {
+            padding: 120px 20px 60px;
+          }
+          
+          .features-section,
+          .gamify-section {
+            padding: 60px 20px;
+          }
+          
+          .feature-card {
+            padding: 60px 20px 30px;
+          }
+
+          .header {
+            padding: 15px 20px;
+          }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav">
+            <a href="Landing.html" class="logo-link">
+                <img class="logo" src="images\logo0.jpg" alt="BenchMate Logo" />
+            </a>
+
+            <div class="header-right">
+                <a href="Signup.html" class="login-or-signup">Login or Signup!</a>
+                <img class="profile-icon" src="images\profile.jpg" alt="Profile" />
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1 class="hero-title">AI-Powered Study Assistant for Students</h1>
+        <p class="hero-subtitle">
+            BenchMate helps you study smarter, not harder. Get personalized learning experiences, 
+            instant answers to your questions, and gamified learning to make studying fun.
+        </p>
+        <div class="hero-buttons">
+            <a href="Signup.html" class="btn-primary">
+                <span class="btn-text">Start Learning</span>
+            </a>
+            <a href="Games.html" class="btn-outline">
+                <span class="btn-text">Explore Gamify</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Features Section with Numbers -->
+    <section class="features-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Why Choose BenchMate?</h2>
+                <p class="section-subtitle">
+                    Designed to help students learn more effectively and efficiently
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-number">1</div>
+                    <div class="feature-icon">
+                        <div class="feature-symbol">🤖</div>
+                    </div>
+                    <h3 class="feature-title">AI-Powered Assistance</h3>
+                    <p class="feature-description">
+                        Get instant answers to your questions with our advanced AI technology that understands context and provides detailed explanations.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-number">2</div>
+                    <div class="feature-icon">
+                        <div class="feature-symbol">🧠</div>
+                    </div>
+                    <h3 class="feature-title">Gamified Learning</h3>
+                    <p class="feature-description">
+                        Make studying fun with our game-based learning approach that rewards progress and keeps you motivated.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-number">3</div>
+                    <div class="feature-icon">
+                        <div class="feature-symbol">🚀</div>
+                    </div>
+                    <h3 class="feature-title">Personalized Progress</h3>
+                    <p class="feature-description">
+                        Track your learning journey with detailed analytics and personalized recommendations based on your performance.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gamify Section with Custom Bullets -->
+    <section class="gamify-section">
+        <div class="gamify-content">
+            <div class="gamify-text">
+                <h2 class="gamify-title">Learning Has Never Been This Fun</h2>
+                <p class="gamify-subtitle">
+                    Our Gamify section turns studying into an exciting adventure. Earn points, 
+                    unlock achievements, and compete with friends while mastering your subjects.
+                </p>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <div class="feature-icon-small">🏆</div>
+                        <p class="feature-text">Earn badges and rewards for completing challenges</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-small">📊</div>
+                        <p class="feature-text">Compete with friends on leaderboards</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-small">🧩</div>
+                        <p class="feature-text">Solve interactive puzzles related to your subjects</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-small">📈</div>
+                        <p class="feature-text">Track your progress with detailed analytics</p>
+                    </div>
+                </div>
+                <a href="Games.html" class="btn-primary">
+                    <span class="btn-text">Explore Gamify</span>
+                </a>
+            </div>
+            <div class="gamify-visual">
+                <div class="visual-placeholder">
+                    Gamify Interface Preview
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-right">
+                    <div class="footer-logo">
+                        <img class="footer-logo-img" src="images/logo0.jpg" alt="BenchMate Logo" />
+                    </div>
+                    <div class="contact-section">
+                        <h3 class="contact-title">Contact Us</h3>
+                        <div class="contact-info">
+                            <div class="contact-email">benchmate@gmail.com</div>
+                            <div class="contact-phone">999 9987654321</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="copyright">© 2025 BenchMate. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

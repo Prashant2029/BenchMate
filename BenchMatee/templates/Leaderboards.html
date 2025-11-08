@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BenchMate - Leaderboards</title>
+    <style>
+        /* Color Variables */
+        :root {
+            --blue: linear-gradient(88.45deg, rgba(74, 108, 247, 1) 0%, rgba(58, 92, 216, 1) 100%);
+            --primary-blue: #4a6cf7;
+            --primary-blue-light: rgba(74, 108, 247, 0.1);
+            --primary-blue-dark: #3a5cd8;
+            --text-dark: #222222;
+            --text-gray: #333333;
+            --text-medium: #555555;
+            --text-light: #666666;
+            --background-white: #ffffff;
+            --background-light: #f8f9fa;
+            --shadow-light: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0px 10px 30px 0px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0px 15px 40px 0px rgba(74, 108, 247, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main content wrapper */
+        .content-wrapper {
+            flex: 1;
+            padding-top: 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        /* Leaderboards Container */
+        .leaderboards-container {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .leaderboards-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .leaderboards-title {
+            color: #4a6cf7;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .leaderboards-subtitle {
+            color: #666666;
+            font-size: 16px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Top 3 Section */
+        .top-3-section {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .top-3-label {
+            color: #666666;
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .top-3-label::before,
+        .top-3-label::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 200px;
+            height: 2px;
+            background: #666666;
+        }
+
+        .top-3-label::before {
+            right: 100%;
+            margin-right: 20px;
+        }
+
+        .top-3-label::after {
+            left: 100%;
+            margin-left: 20px;
+        }
+
+        /* Leaderboard Items */
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-radius: 8px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .leaderboard-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* First Place - Special Styling */
+        .leaderboard-item.first-place {
+            background: #4a6cf7;
+            color: white;
+        }
+
+        .leaderboard-item.first-place .rank,
+        .leaderboard-item.first-place .name,
+        .leaderboard-item.first-place .xp {
+            color: white;
+        }
+
+        /* Other Places */
+        .leaderboard-item.other-place {
+            background: #e4e7ed;
+        }
+
+        .leaderboard-item.user-place {
+            background: #d7dfff;
+            border: 2px solid #4a6cf7;
+        }
+
+        .rank {
+            font-size: 24px;
+            font-weight: 600;
+            min-width: 40px;
+            text-align: center;
+            margin-right: 20px;
+        }
+
+        .name {
+            font-size: 20px;
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .xp {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Medal Icons for Top 3 */
+        .medal {
+            margin-right: 15px;
+            font-size: 24px;
+        }
+
+        .first-place .medal { color: gold; }
+        .second-place .medal { color: silver; }
+        .third-place .medal { color: #cd7f32; } /* Bronze */
+
+        /* Footer Styles */
+        .footer {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+            padding: 80px 5% 40px;
+            width: 100%;
+            color: var(--background-white);
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 40px;
+        }
+
+        .footer-main {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+        }
+
+        .footer-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+            gap: 30px;
+        }
+
+        .footer-logo {
+            margin-bottom: 10px;
+        }
+
+        .footer-logo-img {
+            border-radius: 9px;
+            width: 150px;
+            height: auto;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .footer-logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        .contact-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 15px;
+        }
+
+        .contact-title {
+            color: var(--background-white);
+            font-family: "Inter-SemiBold", sans-serif;
+            font-size: 32px;
+            line-height: 1.2;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .contact-email,
+        .contact-phone {
+            color: var(--background-white);
+            font-family: "Inter-SemiBold", sans-serif;
+            font-size: 18px;
+            line-height: 1.5;
+            font-weight: 600;
+            opacity: 0.9;
+            transition: var(--transition);
+        }
+
+        .contact-email:hover,
+        .contact-phone:hover {
+            opacity: 1;
+            transform: translateX(-5px);
+        }
+
+        .footer-bottom {
+            width: 100%;
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .copyright {
+            color: var(--background-white);
+            font-family: "Inter-Regular", sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding-top: 120px;
+            }
+            
+            .leaderboards-container {
+                padding: 20px;
+            }
+            
+            .leaderboards-title {
+                font-size: 28px;
+            }
+            
+            .top-3-label::before,
+            .top-3-label::after {
+                width: 100px;
+            }
+            
+            .rank {
+                font-size: 20px;
+                min-width: 30px;
+            }
+            
+            .name {
+                font-size: 18px;
+            }
+            
+            .xp {
+                font-size: 16px;
+            }
+            
+            .footer-content {
+                align-items: center;
+            }
+
+            .footer-right {
+                align-items: center;
+                text-align: center;
+            }
+
+            .contact-section {
+                align-items: center;
+            }
+
+            .contact-email:hover,
+            .contact-phone:hover {
+                transform: translateY(-2px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .leaderboard-item {
+                padding: 15px;
+            }
+            
+            .rank {
+                font-size: 18px;
+                min-width: 25px;
+                margin-right: 15px;
+            }
+            
+            .name {
+                font-size: 16px;
+            }
+            
+            .xp {
+                font-size: 14px;
+            }
+            
+            .top-3-label::before,
+            .top-3-label::after {
+                width: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Include Navigation Bar -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <div class="leaderboards-container">
+            <div class="leaderboards-header">
+                <h1 class="leaderboards-title">Leaderboards</h1>
+                <p class="leaderboards-subtitle">See how you rank compared to your friends!</p>
+            </div>
+
+            <div class="leaderboard-list">
+                <!-- First Place -->
+                <div class="leaderboard-item first-place">
+                    <div class="medal">🥇</div>
+                    <div class="rank">1</div>
+                    <div class="name">John</div>
+                    <div class="xp">1520 XP</div>
+                </div>
+
+                <!-- Second Place -->
+                <div class="leaderboard-item other-place second-place">
+                    <div class="medal">🥈</div>
+                    <div class="rank">2</div>
+                    <div class="name">Smith</div>
+                    <div class="xp">1200 XP</div>
+                </div>
+
+                <!-- Third Place -->
+                <div class="leaderboard-item other-place third-place">
+                    <div class="medal">🥉</div>
+                    <div class="rank">3</div>
+                    <div class="name">Emmanuel</div>
+                    <div class="xp">1000 XP</div>
+                </div>
+            </div>
+
+            <!-- Top 3 Separator -->
+            <div class="top-3-section">
+                <div class="top-3-label">TOP 3</div>
+            </div>
+
+            <!-- Rest of Leaderboard -->
+            <div class="leaderboard-list">
+                <!-- Fourth Place -->
+                <div class="leaderboard-item other-place">
+                    <div class="rank">4</div>
+                    <div class="name">Prashant</div>
+                    <div class="xp">900 XP</div>
+                </div>
+
+                <!-- Fifth Place -->
+                <div class="leaderboard-item other-place">
+                    <div class="rank">5</div>
+                    <div class="name">Aashutosh</div>
+                    <div class="xp">800 XP</div>
+                </div>
+
+                <!-- User's Position -->
+                <div class="leaderboard-item user-place">
+                    <div class="rank">6</div>
+                    <div class="name">You</div>
+                    <div class="xp">600 XP</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Footer -->
+    <div id="footer-container"></div>
+
+    <script>
+        // Load navbar and footer
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load navbar
+            fetch('Navbar.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Navbar not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                    // Update active state for Games (since Leaderboards might be under Games)
+                    const navLinks = document.querySelectorAll('.nav-link');
+                    navLinks.forEach(link => {
+                        if (link.textContent.includes('Games')) {
+                            link.classList.add('active');
+                        } else {
+                            link.classList.remove('active');
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading navbar:', error);
+                    document.getElementById('navbar-container').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Navbar failed to load</div>';
+                });
+
+            // Load footer
+            fetch('Footer.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Footer not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer-container').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Footer failed to load</div>';
+                });
+        });
+    </script>
+</body>
+</html>

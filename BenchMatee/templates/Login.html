@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BenchMate - Login</title>
+    <style>
+        /* Color Variables */
+        :root {
+            --blue: linear-gradient(88.45deg, rgba(74, 108, 247, 1) 0%, rgba(58, 92, 216, 1) 100%);
+            --primary-blue: #4a6cf7;
+            --primary-blue-light: rgba(74, 108, 247, 0.1);
+            --primary-blue-dark: #3a5cd8;
+            --text-dark: #222222;
+            --text-gray: #333333;
+            --text-medium: #555555;
+            --text-light: #666666;
+            --background-white: #ffffff;
+            --background-light: #f8f9fa;
+            --shadow-light: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0px 10px 30px 0px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0px 15px 40px 0px rgba(74, 108, 247, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Login Container */
+        .login-container {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0px 15px 40px 0px rgba(0, 0, 0, 0.1);
+            display: flex;
+            max-width: 900px;
+            width: 100%;
+            min-height: 574px;
+            overflow: hidden;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: linear-gradient(143.09deg, rgba(74, 108, 247, 1) 0%, rgba(58, 92, 216, 1) 100%);
+            padding: 60px 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+        }
+
+        .welcome-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .welcome-subtitle {
+            font-size: 15px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Login Form Section */
+        .form-section {
+            padding: 50px 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Tab Navigation */
+        .tab-navigation {
+            display: flex;
+            border-bottom: 1px solid #eeeeee;
+            margin-bottom: 30px;
+        }
+
+        .tab-button {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            color: #999999;
+            transition: var(--transition);
+        }
+
+        .tab-button.active {
+            color: #4a6cf7;
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #4a6cf7;
+            border-radius: 3px 3px 0 0;
+        }
+
+        /* Form Styles */
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            color: #555555;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 16px 16px 46px;
+            border: 1px solid #dddddd;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: var(--transition);
+            background: #ffffff;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4a6cf7;
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777777;
+            font-size: 16px;
+        }
+
+        /* Password Input */
+        .password-input {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #777777;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Remember Me & Forgot Password */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .checkbox {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #767676;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .checkbox.checked {
+            background: #4a6cf7;
+            border-color: #4a6cf7;
+        }
+
+        .checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+        }
+
+        .remember-text {
+            color: #333333;
+            font-size: 14px;
+        }
+
+        .forgot-password {
+            color: #4a6cf7;
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+
+        /* Buttons */
+        .login-button {
+            background: #4a6cf7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .login-button:hover {
+            background: #3a5cd8;
+            transform: translateY(-1px);
+        }
+
+        .google-button {
+            background: #ffffff;
+            color: #000000;
+            border: 2px solid #000000;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .google-button:hover {
+            background: #f8f9fa;
+            transform: translateY(-1px);
+        }
+
+        .google-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Header Logo */
+        .header {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+        }
+
+        /* Copyright */
+        .copyright {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #666666;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                max-width: 400px;
+            }
+
+            .welcome-section {
+                padding: 40px 30px;
+            }
+
+            .form-section {
+                padding: 40px 30px;
+            }
+
+            .header {
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-bottom: 30px;
+                text-align: center;
+            }
+
+            .copyright {
+                position: relative;
+                bottom: 0;
+                left: 0;
+                transform: none;
+                margin-top: 30px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .welcome-section,
+            .form-section {
+                padding: 30px 20px;
+            }
+
+            .tab-navigation {
+                flex-direction: column;
+                border-bottom: none;
+            }
+
+            .tab-button {
+                border-bottom: 1px solid #eeeeee;
+            }
+
+            .tab-button.active::after {
+                display: none;
+            }
+
+            .form-options {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Logo -->
+    <div class="header">
+        <a href="Landing.html" class="logo-link">
+        <img class="logo" src="images/logo0.jpg" alt="BenchMate Logo" />
+        </a>
+    </div>
+
+    <!-- Login Container -->
+    <div class="login-container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1 class="welcome-title">Welcome Back</h1>
+            <p class="welcome-subtitle">
+                Sign in to access your workspace or create a new account to get started with our powerful productivity tools.
+            </p>
+        </div>
+
+        <!-- Login Form Section -->
+        <div class="form-section">
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-button active">Login</button>
+                <button class="tab-button">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form class="form">
+                <!-- Email Input -->
+                <div class="form-group">
+                    <label class="form-label">Email Address / Username</label>
+                    <div class="input-wrapper">
+                        <input type="text" class="form-input" placeholder="Enter your email or Username" />
+                        <span class="input-icon">✉️</span>
+                    </div>
+                </div>
+
+                <!-- Password Input -->
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-wrapper password-input">
+                        <input type="password" class="form-input" placeholder="Enter your password" />
+                        <span class="input-icon">🔒</span>
+                        <button type="button" class="toggle-password">👁️</button>
+                    </div>
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div class="form-options">
+                    <div class="remember-me">
+                        <div class="checkbox"></div>
+                        <span class="remember-text">Remember me</span>
+                    </div>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit" class="login-button">Login to Account</button>
+
+                <!-- Google Login -->
+                <button type="button" class="google-button">
+                    <img src="images/google.jpg" alt="Google" class="google-icon" />
+                    Login with Google
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="copyright">
+        © 2025 BenchMate. All rights reserved.
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const rememberCheckbox = document.querySelector('.checkbox');
+            const togglePassword = document.querySelector('.toggle-password');
+            const passwordInput = document.querySelector('.password-input input');
+
+            // Tab switching
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Here you would typically switch between login and register forms
+                    if (this.textContent === 'Register') {
+                        // Switch to register form
+                        console.log('Switching to register form');
+                    } else {
+                        // Switch to login form
+                        console.log('Switching to login form');
+                    }
+                });
+            });
+
+            // Remember me checkbox
+            rememberCheckbox.addEventListener('click', function() {
+                this.classList.toggle('checked');
+            });
+
+            // Toggle password visibility
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.textContent = type === 'password' ? '👁️' : '🙈';
+            });
+
+            // Form submission
+            const loginForm = document.querySelector('.form');
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = this.querySelector('input[type="text"]').value;
+                const password = this.querySelector('input[type="password"]').value;
+                
+                if (!email || !password) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                // Simulate login process
+                console.log('Logging in with:', { email, password });
+                
+                // Here you would typically make an API call to your backend
+                // For demo purposes, we'll simulate a successful login
+                setTimeout(() => {
+                    alert('Login successful! Redirecting to dashboard...');
+                    window.location.href = 'Landing.html';
+                }, 1000);
+            });
+
+            // Google login
+            const googleButton = document.querySelector('.google-button');
+            googleButton.addEventListener('click', function() {
+                console.log('Initiating Google OAuth...');
+                // Here you would integrate with Google OAuth
+                alert('Google login would be implemented here');
+            });
+        });
+    </script>
+</body>
+</html>

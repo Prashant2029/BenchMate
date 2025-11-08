@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BenchMate - Explore Subjects</title>
+    <style>
+        /* Global CSS Reset and Base Styles */
+        *,
+        *::before,
+        *::after {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        /* Color Variables */
+        :root {
+          --primary-blue: #4a6cf7;
+          --primary-blue-light: rgba(74, 108, 247, 0.1);
+          --primary-blue-dark: #3a5cd8;
+          --text-dark: #222222;
+          --text-gray: #333333;
+          --text-medium: #555555;
+          --text-light: #666666;
+          --background-white: #ffffff;
+          --background-light: #f8f9fa;
+          --shadow-light: 0px 5px 15px 0px rgba(0, 0, 0, 0.05);
+          --shadow-medium: 0px 10px 30px 0px rgba(0, 0, 0, 0.1);
+          --shadow-hover: 0px 15px 40px 0px rgba(74, 108, 247, 0.15);
+          --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          --border-radius: 12px;
+        }
+
+        body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+            color: var(--text-gray);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main content wrapper to push footer down */
+        .content-wrapper {
+            flex: 1;
+            padding-top: 100px; /* Space for fixed header */
+        }
+
+        /* Header Styles - Same as dashboard */
+        .header {
+          background: var(--background-white);
+          padding: 15px 5%;
+          height: 80px;
+          position: fixed;
+          width: 100%;
+          top: 0;
+          left: 0;
+          box-shadow: var(--shadow-light);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          z-index: 1000;
+          transition: var(--transition);
+        }
+
+        .nav {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          max-width: 1200px;
+          margin: 0 auto;
+        }
+
+        .logo {
+          border-radius: 9px;
+          width: 120px;
+          height: auto;
+          object-fit: cover;
+          transition: var(--transition);
+        }
+
+        .nav-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-links {
+            display: flex;
+            position: relative;
+            background-color: #f0f2f5;
+            border-radius: 30px;
+            padding: 6px;
+        }
+
+        .nav-link {
+            padding: 10px 22px;
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            border-radius: 25px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-link.active {
+            color: #fff;
+            background-color: #4a6cf7;
+        }
+
+        .header-right {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+
+        .welcome-user {
+            font-weight: 500;
+            color: #555;
+            font-size: 15px;
+        }
+
+        .profile-icon {
+          width: 45px;
+          height: 45px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 2px solid var(--primary-blue-light);
+          transition: var(--transition);
+          cursor: pointer;
+        }
+
+        .profile-icon:hover {
+          transform: scale(1.1);
+          border-color: var(--primary-blue);
+          box-shadow: var(--shadow-hover);
+        }
+
+        /* Footer Styles - Same as dashboard */
+        .footer {
+          background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-dark));
+          padding: 80px 5% 40px;
+          width: 100%;
+          color: var(--background-white);
+        }
+
+        .footer-content {
+          max-width: 1200px;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 40px;
+        }
+
+        .footer-main {
+          display: flex;
+          justify-content: flex-end;
+          width: 100%;
+        }
+
+        .footer-right {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          text-align: right;
+          gap: 30px;
+        }
+
+        .footer-logo {
+          margin-bottom: 10px;
+        }
+
+        .footer-logo-img {
+          border-radius: 9px;
+          width: 150px;
+          height: auto;
+          object-fit: cover;
+          transition: var(--transition);
+        }
+
+        .footer-logo-img:hover {
+          transform: scale(1.05);
+        }
+
+        .contact-section {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 15px;
+        }
+
+        .contact-title {
+          color: var(--background-white);
+          font-family: "Inter-SemiBold", sans-serif;
+          font-size: 32px;
+          line-height: 1.2;
+          font-weight: 600;
+          margin-bottom: 10px;
+        }
+
+        .contact-info {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 8px;
+        }
+
+        .contact-email,
+        .contact-phone {
+          color: var(--background-white);
+          font-family: "Inter-SemiBold", sans-serif;
+          font-size: 18px;
+          line-height: 1.5;
+          font-weight: 600;
+          opacity: 0.9;
+          transition: var(--transition);
+        }
+
+        .contact-email:hover,
+        .contact-phone:hover {
+          opacity: 1;
+          transform: translateX(-5px);
+        }
+
+        .footer-bottom {
+          width: 100%;
+          text-align: center;
+          padding-top: 40px;
+          border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .copyright {
+          color: var(--background-white);
+          font-family: "Inter-Regular", sans-serif;
+          font-size: 14px;
+          line-height: 1.5;
+          font-weight: 400;
+          opacity: 0.8;
+        }
+
+        /* Explore Subjects Content Styles */
+        .explore-subjects-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            color: #3a5cd8;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .page-description {
+            color: #666666;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .subject-card {
+            background: var(--background-white);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.08);
+            height: 287px;
+            position: relative;
+        }
+
+        .subject-title {
+            color: #000000;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .subject-description {
+            color: #666666;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .subject-category {
+            background: #e6f7ff;
+            color: #1890ff;
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .progress-container {
+            margin-bottom: 25px;
+        }
+
+        .progress-bar {
+            background: #eef4ff;
+            border-radius: 4px;
+            height: 8px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #4a6cf7;
+            border-radius: 4px;
+            height: 100%;
+        }
+
+        .progress-text {
+            color: #000000;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .start-learning-btn {
+            background: #4a6cf7;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            transition: background-color 0.2s ease;
+        }
+
+        .start-learning-btn:hover {
+            background: #3a5cd8;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .subject-card {
+                height: auto;
+                min-height: 287px;
+            }
+            
+            .start-learning-btn {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                margin-top: 20px;
+            }
+
+            .footer-content {
+                align-items: center;
+            }
+
+            .footer-right {
+                align-items: center;
+                text-align: center;
+            }
+
+            .contact-section {
+                align-items: center;
+            }
+
+            .contact-email:hover,
+            .contact-phone:hover {
+                transform: translateY(-2px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Include Navigation Bar -->
+    <div id="navbar-container"></div>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <div class="explore-subjects-container">
+            <h1 class="page-title">Explore Science</h1>
+            <p class="page-description">Learn key concepts through interactive chapters and track your progress.</p>
+            
+            <div class="subjects-grid">
+                <!-- Force Card -->
+                <div class="subject-card">
+                    <h2 class="subject-title">Force</h2>
+                    <p class="subject-description">Understand the basics of force, motion, and Newton's laws.</p>
+                    <div class="subject-category">Science</div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 40%"></div>
+                        </div>
+                        <div class="progress-text">40% Completed</div>
+                    </div>
+                    
+                    <button class="start-learning-btn">Start Learning</button>
+                </div>
+                
+                <!-- Measurement Card -->
+                <div class="subject-card">
+                    <h2 class="subject-title">Measurement</h2>
+                    <p class="subject-description">Learn about units, instruments, and accuracy in science.</p>
+                    <div class="subject-category">Science</div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 20%"></div>
+                        </div>
+                        <div class="progress-text">20% Completed</div>
+                    </div>
+                    
+                    <button class="start-learning-btn">Start Learning</button>
+                </div>
+                
+                <!-- Energy Card -->
+                <div class="subject-card">
+                    <h2 class="subject-title">Energy</h2>
+                    <p class="subject-description">Explore different forms of energy and how they transform.</p>
+                    <div class="subject-category">Science</div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 88%"></div>
+                        </div>
+                        <div class="progress-text">88% Completed</div>
+                    </div>
+                    
+                    <button class="start-learning-btn">Start Learning</button>
+                </div>
+                
+                <!-- Light Card -->
+                <div class="subject-card">
+                    <h2 class="subject-title">Light</h2>
+                    <p class="subject-description">Dive into reflection, refraction, and the nature of light.</p>
+                    <div class="subject-category">Science</div>
+                    
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 50%"></div>
+                        </div>
+                        <div class="progress-text">50% Completed</div>
+                    </div>
+                    
+                    <button class="start-learning-btn">Start Learning</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Footer -->
+    <div id="footer-container"></div>
+
+    <script>
+        // Load navbar and footer
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load navbar
+            fetch('Navbar.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Navbar not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading navbar:', error);
+                    document.getElementById('navbar-container').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Navbar failed to load</div>';
+                });
+
+            // Load footer
+            fetch('Footer.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Footer not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading footer:', error);
+                    document.getElementById('footer-container').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Footer failed to load</div>';
+                });
+        });
+    </script>
+</body>
+</html>

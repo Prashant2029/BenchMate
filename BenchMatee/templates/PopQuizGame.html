@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pop Quiz - Force | BenchMate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: #2d2e3a;
+            min-height: 100vh;
+            color: white;
+        }
+
+        /* Main Quiz Container */
+        .quiz-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* Quiz Header */
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .quiz-title {
+            color: #4a6cf7;
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Question Cards */
+        .question-card {
+            background: #3a3b4a;
+            border-radius: 12px;
+            border: 3px solid #4a6cf7;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        .question-text {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #555;
+            background: #2d2e3a;
+        }
+
+        .option:hover {
+            background: #3a3b4a;
+            border-color: #4a6cf7;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            background: rgba(74, 108, 247, 0.15);
+            border-color: #4a6cf7;
+        }
+
+        .option.correct {
+            background: rgba(76, 175, 80, 0.15);
+            border-color: #4CAF50;
+        }
+
+        .option.incorrect {
+            background: rgba(244, 67, 54, 0.15);
+            border-color: #F44336;
+        }
+
+        .radio-input {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #888;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .radio-input::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4a6cf7;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .option.selected .radio-input::after {
+            opacity: 1;
+        }
+
+        .option.correct .radio-input {
+            border-color: #4CAF50;
+            background: #4CAF50;
+        }
+
+        .option.incorrect .radio-input {
+            border-color: #F44336;
+            background: #F44336;
+        }
+
+        .option-label {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        /* Explanation Section */
+        .explanation-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(74, 108, 247, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid #4a6cf7;
+            display: none;
+        }
+
+        .explanation-section.show {
+            display: block;
+        }
+
+        .explanation-title {
+            color: #4a6cf7;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .explanation-text {
+            color: #e0e0e0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #4a6cf7;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3a5cd8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+        }
+
+        .btn-secondary {
+            background: #666666;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #555555;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: #444444;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #555;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #4a6cf7;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            color: #4a6cf7;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        /* Score Display */
+        .score-display {
+            text-align: center;
+            padding: 20px;
+            background: rgba(74, 108, 247, 0.1);
+            border-radius: 12px;
+            margin-top: 30px;
+            display: none;
+            border: 2px solid #4a6cf7;
+        }
+
+        .score-display.show {
+            display: block;
+        }
+
+        .score-title {
+            color: #4a6cf7;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .score-value {
+            color: #4a6cf7;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .score-message {
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .quiz-title {
+                font-size: 28px;
+            }
+            
+            .question-card {
+                padding: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Include Navbar -->
+    <header id="navbar-container"></header>
+
+    <!-- Main Quiz -->
+    <div class="quiz-container">
+        <!-- Quiz Header -->
+        <div class="quiz-header">
+            <h1 class="quiz-title">Pop Quiz: Physics - Force</h1>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div class="progress-text" id="progressText">1/4 Questions</div>
+        </div>
+
+        <!-- Question 1 -->
+        <div class="question-card" id="question1">
+            <h2 class="question-text">1. What is the SI unit of force?</h2>
+            <div class="options-container">
+                <div class="option" data-value="newton">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Newton</span>
+                </div>
+                <div class="option" data-value="joule">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Joule</span>
+                </div>
+                <div class="option" data-value="pascal">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Pascal</span>
+                </div>
+                <div class="option" data-value="watt">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Watt</span>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="showExplanation(1)">
+                    <i class="fas fa-lightbulb"></i>
+                    Show Explanation
+                </button>
+                <button class="btn btn-primary" onclick="checkAnswer(1, 'newton')">
+                    Check Answer
+                </button>
+            </div>
+            <div class="explanation-section" id="explanation1">
+                <h3 class="explanation-title">Explanation</h3>
+                <p class="explanation-text">
+                    The SI unit of force is the Newton (N), named after Sir Isaac Newton. 
+                    It is defined as the force required to accelerate a mass of one kilogram 
+                    at a rate of one meter per second squared (1 N = 1 kg·m/s²).
+                </p>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card" id="question2" style="display: none;">
+            <h2 class="question-text">2. Which of the following is a contact force?</h2>
+            <div class="options-container">
+                <div class="option" data-value="gravity">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Gravity</span>
+                </div>
+                <div class="option" data-value="friction">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Friction</span>
+                </div>
+                <div class="option" data-value="magnetic">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Magnetic force</span>
+                </div>
+                <div class="option" data-value="electrostatic">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Electrostatic force</span>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="showExplanation(2)">
+                    <i class="fas fa-lightbulb"></i>
+                    Show Explanation
+                </button>
+                <button class="btn btn-primary" onclick="checkAnswer(2, 'friction')">
+                    Check Answer
+                </button>
+            </div>
+            <div class="explanation-section" id="explanation2">
+                <h3 class="explanation-title">Explanation</h3>
+                <p class="explanation-text">
+                    Friction is a contact force because it requires physical contact between surfaces. 
+                    Gravity, magnetic force, and electrostatic force are non-contact forces that act 
+                    at a distance without physical contact.
+                </p>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card" id="question3" style="display: none;">
+            <h2 class="question-text">3. Force = Mass × ?</h2>
+            <div class="options-container">
+                <div class="option" data-value="velocity">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Velocity</span>
+                </div>
+                <div class="option" data-value="acceleration">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Acceleration</span>
+                </div>
+                <div class="option" data-value="energy">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Energy</span>
+                </div>
+                <div class="option" data-value="distance">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Distance</span>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="showExplanation(3)">
+                    <i class="fas fa-lightbulb"></i>
+                    Show Explanation
+                </button>
+                <button class="btn btn-primary" onclick="checkAnswer(3, 'acceleration')">
+                    Check Answer
+                </button>
+            </div>
+            <div class="explanation-section" id="explanation3">
+                <h3 class="explanation-title">Explanation</h3>
+                <p class="explanation-text">
+                    According to Newton's second law of motion, Force = Mass × Acceleration (F = m × a). 
+                    This fundamental relationship shows that the force acting on an object is equal to 
+                    its mass multiplied by its acceleration.
+                </p>
+            </div>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-card" id="question4" style="display: none;">
+            <h2 class="question-text">4. A force is a:</h2>
+            <div class="options-container">
+                <div class="option" data-value="push">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Push</span>
+                </div>
+                <div class="option" data-value="pull">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Pull</span>
+                </div>
+                <div class="option" data-value="both">
+                    <div class="radio-input"></div>
+                    <span class="option-label">Both a and b</span>
+                </div>
+                <div class="option" data-value="none">
+                    <div class="radio-input"></div>
+                    <span class="option-label">None</span>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="showExplanation(4)">
+                    <i class="fas fa-lightbulb"></i>
+                    Show Explanation
+                </button>
+                <button class="btn btn-primary" onclick="checkAnswer(4, 'both')">
+                    Check Answer
+                </button>
+            </div>
+            <div class="explanation-section" id="explanation4">
+                <h3 class="explanation-title">Explanation</h3>
+                <p class="explanation-text">
+                    A force is defined as a push or pull upon an object resulting from the object's 
+                    interaction with another object. Forces can cause objects to accelerate, decelerate, 
+                    remain in place, or change shape.
+                </p>
+            </div>
+        </div>
+
+        <!-- Score Display -->
+        <div class="score-display" id="scoreDisplay">
+            <h2 class="score-title">Quiz Complete!</h2>
+            <div class="score-value" id="scoreValue">0/4</div>
+            <p class="score-message" id="scoreMessage">Great job! You've completed the Force chapter quiz.</p>
+            <div class="action-buttons" style="justify-content: center; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="restartQuiz()">
+                    <i class="fas fa-redo"></i>
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load external navbar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load navbar
+            fetch('Navbar.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Navbar not found');
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('navbar-container').innerHTML = data;
+                    
+                    // Set active state for Games link
+                    setTimeout(() => {
+                        const gamesLink = document.querySelector('a[href="Games.html"]');
+                        const currentLinks = document.querySelectorAll('.nav-link.active');
+                        
+                        // Remove active class from all links first
+                        currentLinks.forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        
+                        // Add active class to Games link
+                        if (gamesLink) {
+                            gamesLink.classList.add('active');
+                        }
+                    }, 100);
+                })
+                .catch(error => {
+                    console.error('Error loading navbar:', error);
+                    document.getElementById('navbar-container').innerHTML = '<div style="padding: 20px; text-align: center; color: red;">Navbar failed to load</div>';
+                });
+
+            // Initialize quiz
+            updateProgress();
+            setupOptionSelection();
+        });
+
+        // Quiz variables
+        let currentQuestion = 1;
+        let score = 0;
+        const totalQuestions = 4;
+
+        // Setup option selection
+        function setupOptionSelection() {
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selected class from all options in this question
+                    const questionCard = this.closest('.question-card');
+                    const allOptions = questionCard.querySelectorAll('.option');
+                    allOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                });
+            });
+        }
+
+        // Show explanation
+        function showExplanation(questionNumber) {
+            const explanation = document.getElementById(`explanation${questionNumber}`);
+            explanation.classList.add('show');
+        }
+
+        // Check answer
+        function checkAnswer(questionNumber, correctAnswer) {
+            const questionCard = document.getElementById(`question${questionNumber}`);
+            const selectedOption = questionCard.querySelector('.option.selected');
+            
+            if (!selectedOption) {
+                alert('Please select an answer!');
+                return;
+            }
+
+            const userAnswer = selectedOption.getAttribute('data-value');
+            const isCorrect = userAnswer === correctAnswer;
+
+            // Show correct/incorrect states
+            const allOptions = questionCard.querySelectorAll('.option');
+            allOptions.forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+                if (option.getAttribute('data-value') === correctAnswer) {
+                    option.classList.add('correct');
+                } else if (option === selectedOption && !isCorrect) {
+                    option.classList.add('incorrect');
+                }
+            });
+
+            // Update score
+            if (isCorrect) {
+                score++;
+            }
+
+            // Move to next question or show results
+            setTimeout(() => {
+                if (questionNumber < totalQuestions) {
+                    document.getElementById(`question${questionNumber}`).style.display = 'none';
+                    document.getElementById(`question${questionNumber + 1}`).style.display = 'block';
+                    currentQuestion = questionNumber + 1;
+                    updateProgress();
+                } else {
+                    showResults();
+                }
+            }, 2000);
+        }
+
+        // Update progress
+        function updateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            const progress = (currentQuestion / totalQuestions) * 100;
+            progressFill.style.width = `${progress}%`;
+            progressText.textContent = `${currentQuestion}/${totalQuestions} Questions`;
+        }
+
+        // Show results
+        function showResults() {
+            document.getElementById('question4').style.display = 'none';
+            document.getElementById('scoreDisplay').classList.add('show');
+            
+            const scoreValue = document.getElementById('scoreValue');
+            const scoreMessage = document.getElementById('scoreMessage');
+            
+            scoreValue.textContent = `${score}/${totalQuestions}`;
+            
+            if (score === totalQuestions) {
+                scoreMessage.textContent = 'Perfect score! You are a force expert! 🎉';
+            } else if (score >= totalQuestions / 2) {
+                scoreMessage.textContent = 'Good job! You have a solid understanding of forces.';
+            } else {
+                scoreMessage.textContent = 'Keep practicing! Review the force concepts and try again.';
+            }
+        }
+
+        // Restart quiz
+        function restartQuiz() {
+            currentQuestion = 1;
+            score = 0;
+            
+            // Reset all questions
+            for (let i = 1; i <= totalQuestions; i++) {
+                document.getElementById(`question${i}`).style.display = i === 1 ? 'block' : 'none';
+                
+                // Reset options
+                const options = document.querySelectorAll(`#question${i} .option`);
+                options.forEach(option => {
+                    option.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                // Hide explanations
+                document.getElementById(`explanation${i}`).classList.remove('show');
+            }
+            
+            // Hide score display
+            document.getElementById('scoreDisplay').classList.remove('show');
+            
+            updateProgress();
+        }
+    </script>
+</body>
+</html>
