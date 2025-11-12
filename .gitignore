@@ -2,7 +2,7 @@ benchmate
 __pycache__/
 *.py[cod]
 *.pyo
-
+.env
 # Database
 *.sqlite3
 
