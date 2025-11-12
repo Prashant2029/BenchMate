@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BenchMate - Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, Roboto, Helvetica, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 10px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #000;
+            font-weight: 500;
+            font-size: 15px;
+        }
+        
+        .nav-links a:hover {
+            color: #4a6cf7;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #4a6cf7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Welcome Section */
+        .welcome-section {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .welcome-section h1 {
+            font-size: 39px;
+            color: #222;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-section p {
+            font-size: 17px;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Topic of the Day */
+        .topic-section {
+            margin: 40px 0;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #3a5cd8;
+            margin-bottom: 20px;
+        }
+        
+        .section-title i {
+            font-size: 29px;
+        }
+        
+        .section-title h2 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .topic-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .topic-card h3 {
+            font-size: 23px;
+            color: #050505;
+            margin-bottom: 15px;
+        }
+        
+        .topic-card p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .subject-badge {
+            display: inline-block;
+            background-color: #e6f7ff;
+            color: #1890ff;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn-primary {
+            background-color: #4a6cf7;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: #4a6cf7;
+            border: 2px solid #4a6cf7;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        /* Progress Section */
+        .progress-section {
+            margin: 60px 0;
+        }
+        
+        .progress-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .progress-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            width: 100%;
+            max-width: 570px;
+            display: flex;
+        }
+        
+        .progress-circle {
+            min-width: 80px;
+            height: 80px;
+            border-radius: 40px;
+            background-color: #e6f7ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4a6cf7;
+            font-weight: 700;
+            font-size: 20px;
+            margin-right: 20px;
+        }
+        
+        .progress-content {
+            flex-grow: 1;
+        }
+        
+        .progress-content h3 {
+            font-size: 19px;
+            color: #222;
+            margin-bottom: 10px;
+        }
+        
+        .progress-content p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+        
+        .progress-bar {
+            background-color: #eef4ff;
+            border-radius: 4px;
+            height: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .progress-fill {
+            background-color: #4a6cf7;
+            border-radius: 4px;
+            height: 100%;
+        }
+        
+        /* Subjects Section */
+        .subjects-section {
+            margin: 60px 0;
+        }
+        
+        .subject-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .subject-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+        }
+        
+        .subject-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+        }
+        
+        .science {
+            background-color: #e6f7ff;
+            color: #1890ff;
+        }
+        
+        .math {
+            background-color: #f6ffed;
+            color: #52c41a;
+        }
+        
+        .nepali {
+            background-color: #fff7e6;
+            color: #fa8c16;
+        }
+        
+        .english {
+            background-color: #fff2e8;
+            color: #fa541c;
+        }
+        
+        .subject-card h3 {
+            font-size: 20px;
+            color: #222;
+            margin-bottom: 10px;
+        }
+        
+        .subject-card p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .progress-card, .subject-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .progress-circle {
+                margin: 0 auto 15px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="https://api.builder.io/api/v1/image/assets/TEMP/2a7f5fdb9bb30e66d905e4d030a8fce950bca78f?placeholderIfAbsent=true&apiKey=f64508a8f0814a288226736a872b2cec" alt="BenchMate Logo">
+                </div>
+                
+                <div class="nav-links">
+                    <a href="{% url 'dashboard' %}">Dashboard</a>
+                    <a href="{% url 'subject' %}">Subjects</a>
+                    <a href="{% url 'chat' %}">Chatbot</a>
+                    <a href="#">Games</a>
+                </div>
+                
+                <div class="user-info">
+                    <span>Welcome {{ username }}!</span>
+                    <a href="{% url 'profile' %}">
+                        <div class="avatar">
+                            <i class="fas fa-user"></i> 
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1>Welcome back, {{ username }}!</h1>
+            <p>Ready to continue your learning journey?</p>
+        </section>
+
+        <!-- Topic of the Day -->
+        <section class="topic-section">
+            <div class="section-title">
+                <i class="fas fa-graduation-cap"></i>
+                <h2>Topic of the Day</h2>
+            </div>
+            
+            <div class="topic-card">
+                <h3>{{ topic_of_the_day.title }}</h3>
+                <p>{{ topic_of_the_day.description }}</p>
+                <span class="subject-badge">{{ topic_of_the_day.subject }}</span>
+                
+                <div class="action-buttons">
+                    <button class="btn-secondary">Save for Later</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Progress Section -->
+        <section class="progress-section">
+            <div class="section-title">
+                <i class="fas fa-tasks"></i>
+                <h2>Continue Your Previous Topic</h2>
+            </div>
+            
+            <div class="progress-cards">
+                {% for chapter in recent_chapters %}
+                <div class="progress-card">
+                    <div class="progress-circle">{{ chapter.progress }}%</div>
+                    <div class="progress-content">
+                        <h3>{{ chapter.title }}</h3>
+                        <p>{{ chapter.description }}</p>
+                        
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: {{ chapter.progress }}%"></div>
+                        </div>
+                        
+                    </div>
+                </div>
+                {% empty %}
+                <p>No recent chapters found.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Subjects Section -->
+        <section class="subjects-section">
+            <div class="section-title">
+                <i class="fas fa-book-open"></i>
+                <h2>Explore Subjects</h2>
+            </div>
+            
+            <div class="subject-cards">
+                {% for subject in subjects %}
+                <div class="subject-card">
+                    <div class="subject-icon 
+                        {% if subject.name == 'Science' %}science
+                        {% elif subject.name == 'Mathematics' %}math
+                        {% elif subject.name == 'Nepali' %}nepali
+                        {% elif subject.name == 'English' %}english{% endif %}">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>{{ subject.name }}</h3>
+                    <p>Explore content and quizzes for {{ subject.name }}</p>
+                    <a href="{% url 'subject_book' subject.name %}" class="btn-primary">Explore {{ subject.name }}</a>
+                </div>
+                {% empty %}
+                <p>No subjects found.</p>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>

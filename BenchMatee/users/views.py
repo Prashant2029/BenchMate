@@ -11,11 +11,6 @@ from django.contrib.auth.decorators import login_required
 def home(request):
         return render(request, 'users/index.html')
 
-@login_required
-def dashboard(request):
-    username = request.user.username  
-    return render(request, 'dashboard.html', {'username': username})
-
 
 def login_register_view(request):
     form_type = 'login'  
