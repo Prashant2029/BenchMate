@@ -26,6 +26,10 @@ import google.generativeai as genai
 from PyPDF2 import PdfReader
 from django.conf import settings
 from ai_agent.langgraph_agent import get_quiz
+import random
+import re
+from django.http import JsonResponse
+import google.generativeai as genai
 
 # Create your views here.
 def subject(request):
@@ -36,62 +40,89 @@ def subject(request):
 @login_required
 def dashboard(request):
     user = request.user
+    pdf_path = "static/books/Mathematics.pdf"
+    reader = PdfReader(pdf_path)
 
-    # Subjects
+    # Extract text from pages 19–20 (0-indexed)
+    pages_to_scan = [18, 19]
+    extracted_text = ""
+    for p in pages_to_scan:
+        if p < len(reader.pages):
+            extracted_text += reader.pages[p].extract_text() + "\n"
+
+    if not extracted_text.strip():
+        extracted_text = "No readable text found in pages 19–20."
+
+    # Configure Gemini 2.5 flash
+    model = genai.GenerativeModel("gemini-2.5-flash")
+
+    # Prompt: explicitly ask for formulas, theorems, or definitions
+    prompt = f"""
+    You are an academic assistant. From the following mathematics textbook text, extract a **single key concept** suitable for a 'Topic of the Day'.
+    The topic should be a **formula, theorem, definition, or named concept** found on the page.
+    Respond **only in JSON**, no markdown, no explanation, in this format:
+    {{
+      "title": "<formula/theorem/definition name>",
+      "description": "<1-2 sentence explanation or context>",
+      "subject": "Mathematics"
+    }}
+
+    Text:
+    {extracted_text[:5000]}
+    """
+
+    response = model.generate_content(prompt)
+    text = response.text.strip()
+
+    if text.startswith("```"):
+        text = text.replace("```json", "").replace("```", "").strip()
+
+    try:
+        topic_of_the_day = json.loads(text)
+    except json.JSONDecodeError:
+        topic_of_the_day = {
+            "title": "Pythagoras Theorem",
+            "description": "A squared plus B squared equals C squared for right-angled triangles.",
+            "subject": "Mathematics"
+        }
+
+    # Subjects and progress
     subjects = Subject.objects.all()
-
-    # Fake progress data for demo
     subject_progress_data = []
     for subject in subjects:
-        # Try to get actual progress
         user_subject_progress = UserSubjectProgress.objects.filter(user=user, subject=subject).first()
-
-        if user_subject_progress:
-            progress_percentage = user_subject_progress.progress_percentage
-        else:
-            # Fake data for demo
-            if subject.name in ["Nepali", "English"]:
-                progress_percentage = 30 if subject.name == "Nepali" else 50
-            else:
-                progress_percentage = 0
-
+        progress_percentage = user_subject_progress.progress_percentage if user_subject_progress else 0
         subject_progress_data.append({
             'name': subject.name,
             'progress': progress_percentage
         })
 
-    # Recent chapters progress (demo purposes)
-    recent_chapters = []
-
+    # Recent chapters
     user_chapter_progress_qs = UserChapterProgress.objects.filter(user=user).order_by('-last_accessed')[:2]
-    for progress in user_chapter_progress_qs:
-        recent_chapters.append({
+    recent_chapters = [
+        {
             'title': progress.chapter.title,
             'description': f"You were learning {progress.chapter.title} in {progress.chapter.subject.name}",
             'progress': progress.progress_percentage
-        })
+        } for progress in user_chapter_progress_qs
+    ]
 
-    # Add fake data if less than 2 recent chapters
+    # Fill with demo data if less than 2
     while len(recent_chapters) < 2:
-        if len(recent_chapters) == 0:
-            recent_chapters.append({
-                'title': 'एक चिहान',
-                'description': 'You were exploring a progressive Nepali novel.',
-                'progress': 40
-            })
-        else:
-            recent_chapters.append({
-                'title': 'Algebra: Quadratic Equations',
-                'description': 'You were learning about solving quadratic equations using different methods.',
-                'progress': 65
-            })
+        recent_chapters.append({
+            'title': 'Algebra: Quadratic Equations',
+            'description': 'You were learning about solving quadratic equations using different methods.',
+            'progress': 65
+        })
 
     context = {
         'username': user.username,
         'subjects': subjects,
         'subject_progress_data': subject_progress_data,
         'recent_chapters': recent_chapters,
+        'topic_of_the_day': topic_of_the_day,
     }
+
     return render(request, 'course/dashboard.html', context)
 
 
@@ -177,7 +208,7 @@ def ask_about_pdf(request, subject_name):
         Answer the user's question using only that content. Be concise and factual.
 
         Textbook content:
-        {full_text[:15000]}
+        {full_text[:150000000]}
 
         Question: {question}
         """
@@ -306,3 +337,4 @@ def generate_quiz_from_ai(request):
         "quizzes": quizzes,
         "content": content_for_quiz
     })
+
