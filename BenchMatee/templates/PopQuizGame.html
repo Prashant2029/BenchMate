@@ -331,10 +331,6 @@
                 </div>
             </div>
             <div class="action-buttons">
-                <button class="btn btn-secondary" onclick="showExplanation(1)">
-                    <i class="fas fa-lightbulb"></i>
-                    Show Explanation
-                </button>
                 <button class="btn btn-primary" onclick="checkAnswer(1, 'newton')">
                     Check Answer
                 </button>
@@ -371,10 +367,6 @@
                 </div>
             </div>
             <div class="action-buttons">
-                <button class="btn btn-secondary" onclick="showExplanation(2)">
-                    <i class="fas fa-lightbulb"></i>
-                    Show Explanation
-                </button>
                 <button class="btn btn-primary" onclick="checkAnswer(2, 'friction')">
                     Check Answer
                 </button>
@@ -411,10 +403,6 @@
                 </div>
             </div>
             <div class="action-buttons">
-                <button class="btn btn-secondary" onclick="showExplanation(3)">
-                    <i class="fas fa-lightbulb"></i>
-                    Show Explanation
-                </button>
                 <button class="btn btn-primary" onclick="checkAnswer(3, 'acceleration')">
                     Check Answer
                 </button>
@@ -451,10 +439,6 @@
                 </div>
             </div>
             <div class="action-buttons">
-                <button class="btn btn-secondary" onclick="showExplanation(4)">
-                    <i class="fas fa-lightbulb"></i>
-                    Show Explanation
-                </button>
                 <button class="btn btn-primary" onclick="checkAnswer(4, 'both')">
                     Check Answer
                 </button>
@@ -473,7 +457,6 @@
         <div class="score-display" id="scoreDisplay">
             <h2 class="score-title">Quiz Complete!</h2>
             <div class="score-value" id="scoreValue">0/4</div>
-            <p class="score-message" id="scoreMessage">Great job! You've completed the Force chapter quiz.</p>
             <div class="action-buttons" style="justify-content: center; margin-top: 20px;">
                 <button class="btn btn-primary" onclick="restartQuiz()">
                     <i class="fas fa-redo"></i>
@@ -540,12 +523,6 @@
                     this.classList.add('selected');
                 });
             });
-        }
-
-        // Show explanation
-        function showExplanation(questionNumber) {
-            const explanation = document.getElementById(`explanation${questionNumber}`);
-            explanation.classList.add('show');
         }
 
         // Check answer
