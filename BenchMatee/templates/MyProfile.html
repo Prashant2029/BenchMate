@@ -166,17 +166,66 @@
             font-size: 15px;
         }
 
-        .chart-placeholder {
+        /* XP Section Styles */
+        .xp-section {
             background: linear-gradient(180deg, rgba(250, 251, 255, 0.9) 0%, rgba(255, 255, 255, 1) 100%);
             border-radius: 12px;
-            padding: 20px;
-            height: 300px;
+            padding: 30px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #666;
-            font-size: 16px;
+            text-align: center;
             box-shadow: inset 0px 6px 18px 0px rgba(15, 23, 42, 0.04);
+            height: 300px;
+            position: relative;
+        }
+
+        .xp-earned-this-week {
+            color: #4a6cf7;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .track-your-daily-progress {
+            color: #6b7280;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .xp-message {
+            color: #333333;
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .xp-value {
+            color: #4a6cf7;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .play-games-button {
+            background: #4a6cf7;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .play-games-button:hover {
+            background: #3a5cd8;
+            transform: translateY(-2px);
         }
 
         .leaderboard-content {
@@ -509,14 +558,20 @@
 
             <!-- Main Content Area -->
             <div class="profile-main">
-                <!-- XP Chart Section -->
+                <!-- XP Section -->
                 <div class="chart-section">
                     <div class="section-header">
                         <h2 class="section-title">XP Earned This Week</h2>
                         <p class="section-subtitle">Track your daily progress</p>
                     </div>
-                    <div class="chart-placeholder">
-                        📊 XP Progress Chart Will Appear Here
+                    <div class="xp-section">
+                        <div class="xp-earned-this-week">XP Earned This Week</div>
+                        <div class="xp-message">
+                            You've earned 1100 XP this week!<br>
+                            Keep pushing yourself! Good Luck!
+                        </div>
+                        <div class="xp-value">1100</div>
+                        <button class="play-games-button">PLAY GAMES</button>
                     </div>
                 </div>
 
