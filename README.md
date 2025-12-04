@@ -1,4 +1,4 @@
-# NotebookLM Clone
+# Benchmate
 
 A web application that replicates NotebookLM features using **Gemini 2.0 Flash** for AI-powered quiz and flashcard generation from PDF documents.
 
@@ -44,7 +44,7 @@ A web application that replicates NotebookLM features using **Gemini 2.0 Flash**
 ### 1. Clone the Repository
 
 ```bash
-cd /home/prashant/Projects/werter1
+git clone https://github.com/Prashant2029/BenchMate
 ```
 
 ### 2. FastAPI Backend Setup
