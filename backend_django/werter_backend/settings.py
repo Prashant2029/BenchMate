@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-hrywmxl4qt!#@8pe26(q)v8!iohn7z9#)3@u^oo!zwy+k((k@r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["benchmate-django.onrender.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -138,7 +138,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://bench-mate.vercel.app",
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

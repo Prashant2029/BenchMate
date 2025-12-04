@@ -2,7 +2,8 @@ import requests
 import json
 from fpdf import FPDF
 
-BASE_URL = "http://localhost:8000/api"
+BASE_URL = "https://benchmate-fastapi.onrender.com/api"
+
 
 def create_dummy_pdf():
     pdf = FPDF()
