@@ -1,5 +1,5 @@
 import axios from 'axios';
-import jwtDecode from 'jwt-decode'; 
+import { jwtDecode } from 'jwt-decode';
 
 const api = axios.create({
     baseURL: 'https://benchmate-django.onrender.com/api',
