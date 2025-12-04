@@ -1,6 +1,6 @@
 # Benchmate
 
-A web application that replicates NotebookLM features using **Gemini 2.0 Flash** for AI-powered quiz and flashcard generation from PDF documents.
+A web application **Gemini 2.0 Flash** for AI-powered quiz and flashcard generation from PDF documents.
 
 ## Features
 
