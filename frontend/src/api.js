@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+import jwtDecode from 'jwt-decode'; 
 
 const api = axios.create({
-    baseURL: 'http://localhost:8001/api',
+    baseURL: 'https://benchmate-django.onrender.com/api',
 });
 
 export const fastApi = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: 'https://benchmate-fastapi.onrender.com',
 });
 
 api.interceptors.request.use(
@@ -17,7 +17,6 @@ api.interceptors.request.use(
             const currentTime = Date.now() / 1000;
             if (decoded.exp < currentTime) {
                 // Token expired
-                // TODO: Implement refresh token logic here
                 localStorage.removeItem('access_token');
                 localStorage.removeItem('refresh_token');
                 window.location.href = '/login';
