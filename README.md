@@ -294,4 +294,3 @@ BenchMate/
     ├── package.json
     └── tailwind.config.js
 ```
-
