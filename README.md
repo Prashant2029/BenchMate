@@ -1,101 +1,143 @@
 # Benchmate
 
 A web application using **Gemini 2.0 Flash** for AI-powered quiz and flashcard generation from PDF documents.
+=======
 
-## Features
 
-- 📄 **PDF Upload**: Drag-and-drop or click to upload PDF files
-- 🧠 **AI-Powered Quizzes**: Generate multiple-choice quizzes from PDF content
-- 📚 **Flashcards**: Create interactive flashcards with flip animations
-- ✨ **Modern UI**: Premium design with glassmorphism, gradients, and smooth animations
+# 📘 Benchmate
 
-## Tech Stack
+A web application that uses **Gemini 2.0 Flash** for AI-powered **quiz and flashcard generation from PDF documents**.
+
+---
+
+## ✨ Features
+
+* 📄 **PDF Upload** – Drag-and-drop or click to upload PDFs
+* 🧠 **AI-Powered Quizzes** – Automatically generate MCQs from documents
+* 📚 **Flashcards** – Interactive flashcards with flip animations
+* ✨ **Modern UI** – Glassmorphism, gradients & smooth animations
+
+---
+
+## 🛠 Tech Stack
 
 ### Frontend
-- React + Vite
-- Tailwind CSS
-- Framer Motion (animations)
-- Axios (API calls)
-- Lucide React (icons)
 
-### Backend
-- FastAPI
-- Google Generative AI (Gemini 2.0 Flash)
-- PyPDF (PDF parsing)
+* React + Vite
+* Tailwind CSS
+* Framer Motion
+* Axios
+* Lucide React
+
+### Backend (FastAPI)
+
+* FastAPI
+* Google Gemini 2.0 Flash
+* PyPDF
 
 ### Backend (Django)
-- Django
-- Django REST Framework
 
-## Prerequisites
+* Django
+* Django REST Framework
 
-### Option 1: Local Development
-- Node.js 18+ (v24.11.1 installed via NVM)
-- Python 3.8+
-- Gemini API Key ([Get one here](https://aistudio.google.com/app/apikey))
+---
 
-### Option 2: Docker Deployment
-- Docker Engine 20.10+
-- Docker Compose 2.0+
-- Gemini API Key ([Get one here](https://aistudio.google.com/app/apikey))
+## ✅ Prerequisites (All Operating Systems)
 
-## Installation
+You must have the following installed:
 
-### 1. Clone the Repository
+* **Node.js 18+**
+* **Python 3.8+**
+* **Git**
+* **Gemini API Key**
+  👉 [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)
+
+---
+
+# 🚀 Installation Guide (Linux, macOS & Windows)
+
+---
+
+## 1️⃣ Clone the Repository
 
 ```bash
 git clone https://github.com/Prashant2029/BenchMate
+<<<<<<< HEAD
+=======
+cd BenchMate
+>>>>>>> 950369e (final touch)
 ```
 
-### 2. FastAPI Backend Setup
+---
+
+# ⚙️ Backend Setup – FastAPI
+
+## ✅ Linux & macOS
 
 ```bash
 cd backend
-
-# Create virtual environment
 python3 -m venv venv
 source venv/bin/activate
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Create .env file with your Gemini API key
 echo "GEMINI_API_KEY=your_api_key_here" > .env
 ```
 
-### 3. Django Backend Setup
+---
+
+## ✅ Windows (PowerShell)
+
+```powershell
+cd backend
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+echo GEMINI_API_KEY=your_api_key_here > .env
+```
+
+---
+
+# ⚙️ Backend Setup – Django
+
+## ✅ Linux & macOS
 
 ```bash
 cd backend_django
-
-# Create virtual environment
 python3 -m venv venv
 source venv/bin/activate
-
-# Install dependencies
 pip install -r requirements.txt
-
-# Run migrations
 python manage.py migrate
 ```
 
-### 4. Frontend Setup
+---
+
+## ✅ Windows
+
+```powershell
+cd backend_django
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+python manage.py migrate
+```
+
+---
+
+# 🎨 Frontend Setup (React + Vite)
 
 ```bash
-cd ../frontend
-
-# Make sure you're using Node 24 (if you have NVM)
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm use 24
-
-# Install dependencies
+cd frontend
 npm install
 ```
 
-## Running the Application
+---
 
-### Start FastAPI Backend Server
+# ▶️ Running the Application
+
+---
+
+## ✅ Start FastAPI Backend (Port 8000)
+
+### Linux & macOS
 
 ```bash
 cd backend
@@ -103,9 +145,22 @@ source venv/bin/activate
 uvicorn main:app --reload --port 8000
 ```
 
-The backend API will be available at `http://localhost:8000`
+### Windows
 
-### Start Django Backend Server
+```powershell
+cd backend
+venv\Scripts\activate
+uvicorn main:app --reload --port 8000
+```
+
+✅ Backend runs at:
+**[http://localhost:8000](http://localhost:8000)**
+
+---
+
+## ✅ Start Django Backend (Port 8001)
+
+### Linux & macOS
 
 ```bash
 cd backend_django
@@ -113,104 +168,130 @@ source venv/bin/activate
 python manage.py runserver 8001
 ```
 
-The Django backend will be available at `http://localhost:8001` (Changed to 8001 to avoid conflict with FastAPI on 8000)
+### Windows
 
-### Start Frontend Development Server
+```powershell
+cd backend_django
+venv\Scripts\activate
+python manage.py runserver 8001
+```
+
+✅ Django runs at:
+**[http://localhost:8001](http://localhost:8001)**
+
+---
+
+## ✅ Start Frontend
 
 ```bash
 cd frontend
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-nvm use 24
 npm run dev
 ```
 
-The frontend will be available at `http://localhost:5173`
+✅ Frontend runs at:
+**[http://localhost:5173](http://localhost:5173)**
 
-## Docker Deployment
+---
 
-For production deployment using Docker:
+# 🐳 Docker Deployment (All OS)
 
-### 1. Setup Environment Variables
-
-Create a `.env` file in the root directory:
+### 1️⃣ Setup Environment Variables
 
 ```bash
 cp .env.example .env
-# Edit .env and add your Gemini API key
 ```
 
-### 2. Build and Run with Docker Compose
-
-```bash
-# Build and start all services
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop all services
-docker-compose down
-
-# Rebuild after code changes
-docker-compose up -d --build
-```
-
-### 3. Access the Application
-
-- **Frontend**: http://localhost (port 80)
-- **FastAPI Backend**: http://localhost:8000
-- **Django Backend**: http://localhost:8001
-
-> **Note**: For production deployment, you'll need to update the API URLs in the frontend to point to your production domain instead of localhost.
-
-## Usage
-
-1. **Upload PDF**: Drag and drop a PDF file or click to browse
-2. **Generate Quiz**: Click the "Quiz" tab and generate questions
-3. **Create Flashcards**: Click the "Flashcards" tab and generate study cards
-4. **Study**: Interact with quizzes and flip through flashcards
-
-## API Endpoints
-
-- `GET /` - Health check
-- `POST /upload` - Upload a PDF file
-- `POST /generate/quiz` - Generate quiz questions
-- `POST /generate/flashcards` - Generate flashcards
-
-## Environment Variables
-
-Create a `.env` file in the `backend` directory:
+Edit `.env` and add:
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
-## Project Structure
+---
+
+### 2️⃣ Build & Run
+
+```bash
+docker-compose up -d --build
+```
+
+---
+
+### 3️⃣ View Logs
+
+```bash
+docker-compose logs -f
+```
+
+---
+
+### 4️⃣ Stop Containers
+
+```bash
+docker-compose down
+```
+
+---
+
+### ✅ Docker Access URLs
+
+| Service  | URL                                            |
+| -------- | ---------------------------------------------- |
+| Frontend | [http://localhost](http://localhost:5173)           |
+| FastAPI  | [http://localhost:8000](http://localhost:8000) |
+| Django   | [http://localhost:8001](http://localhost:8001) |
+
+---
+
+# 📌 Usage
+
+1. Upload a **PDF document**
+2. Click **Quiz** to generate AI-based questions
+3. Click **Flashcards** to generate study cards
+4. Flip flashcards and practice quizzes interactively
+
+---
+
+# 🔌 API Endpoints
+
+| Method | Endpoint               | Description         |
+| ------ | ---------------------- | ------------------- |
+| GET    | `/`                    | Health check        |
+| POST   | `/upload`              | Upload PDF          |
+| POST   | `/generate/quiz`       | Generate quiz       |
+| POST   | `/generate/flashcards` | Generate flashcards |
+
+---
+
+# ⚠️ Notes
+
+* PDFs are stored **in memory only**
+* Restarting backend will remove uploaded files
+* Gemini API has **rate limits**
+* Update frontend API URLs for production deployment
+
+---
+
+# 📂 Project Structure
 
 ```
-werter/
+BenchMate/
 ├── backend/
-│   ├── main.py           # FastAPI application
-│   ├── requirements.txt  # Python dependencies
-│   └── .env             # Environment variables (create this)
-├── backend_django/       # Django application
+│   ├── main.py
+│   ├── requirements.txt
+│   └── .env
+├── backend_django/
 │   ├── manage.py
 │   └── ...
 └── frontend/
     ├── src/
     │   ├── components/
-    │   │   ├── Upload.jsx      # PDF upload component
-    │   │   ├── Quiz.jsx        # Quiz component
-    │   │   └── Flashcards.jsx  # Flashcard component
-    │   ├── App.jsx       # Main application
-    │   └── index.css     # Tailwind styles
-    ├── package.json      # Node dependencies
+    │   │   ├── Upload.jsx
+    │   │   ├── Quiz.jsx
+    │   │   └── Flashcards.jsx
+    │   ├── App.jsx
+    │   └── index.css
+    ├── package.json
     └── tailwind.config.js
 ```
 
-## Notes
-
-- PDFs are stored in memory and will be lost on server restart
-- For production, consider implementing persistent storage (database)
-- Gemini API has rate limits - adjust `num_questions` and `num_cards` as needed
