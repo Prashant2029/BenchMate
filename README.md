@@ -62,10 +62,7 @@ You must have the following installed:
 
 ```bash
 git clone https://github.com/Prashant2029/BenchMate
-<<<<<<< HEAD
-=======
 cd BenchMate
->>>>>>> 950369e (final touch)
 ```
 
 ---
